@@ -132,7 +132,7 @@ export const EN: Record<TranslationKey, string> = {
   'common.match': 'Match',
   'common.aram': 'ARAM',
   'common.available': 'Available',
-  'common.lookingForOne': 'Looking for 1',
+  'common.lookingForOne': 'Find 1',
   'common.matches': 'Matches',
   'common.adminOverview': 'Overview',
   'common.adminUsers': 'Users',
@@ -161,7 +161,7 @@ export const EN: Record<TranslationKey, string> = {
   'landing.availabilityTitle': 'Available now',
   'landing.availabilityDescription':
     'Open availability for 30 or 60 minutes and receive invitations.',
-  'landing.postsTitle': 'Looking for 1',
+  'landing.postsTitle': 'Find 1',
   'landing.postsDescription': 'Post the missing slot and find the right player.',
 
   'login.title': 'Log in',
@@ -188,7 +188,7 @@ export const EN: Record<TranslationKey, string> = {
   'home.availabilityTitle': 'Available now',
   'home.availabilityDescription': 'Open a 30 or 60 minute window and receive invitations.',
   'home.availabilityCta': 'Open availability',
-  'home.postsTitle': 'Looking for 1',
+  'home.postsTitle': 'Find 1',
   'home.postsDescription': 'Post the missing slot and review applications.',
   'home.postsCta': 'View posts',
   'home.adminTitle': 'Admin panel available',
