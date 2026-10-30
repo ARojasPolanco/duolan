@@ -348,7 +348,8 @@ Además: 404, error boundary, toasts, skeletons, estados vacíos, responsive mob
 - Tipos: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`.
 - No se commitean secretos, `.env`, logs, `node_modules` ni `dist`.
 - No se hace commit sin que lint y tests pasen.
-- No hacer commit, push ni deploy si el usuario no lo pidió explícitamente.
+- Al cerrar cada fase, hacer commit y push a `dev` con lint, tests y build verdes.
+- No hacer deploy ni tocar `main` hasta que el usuario lo pida explícitamente.
 
 ## 18. Prohibiciones explícitas
 

@@ -4,10 +4,10 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 
 ## Estado actual
 
-- **Fase:** Fase 0 y Fase 1 completadas. Siguiente: Fase 2 (base Angular).
-- **Repo:** Git inicializado en `main`, sin commits por pedido explícito.
+- **Fase:** Fases 0, 1 y 2 completadas. Siguiente: Fase 3 (público, auth y onboarding).
+- **Repo:** rama `dev` publicada en `origin/dev`; `main` no se tocó todavía.
 - **Backend:** copia adaptada de Duo LAS con `GAME_SERVER=LAN`, migración LAN y branding Duo LAN.
-- **Frontend:** scaffold Angular 21 + TypeScript estricto + Tailwind 4. Features pendientes.
+- **Frontend:** base Angular 21 completa con auth, guards, interceptores, DTOs, servicios, shells y UI compartida. Features pendientes.
 - **Base de datos:** PostgreSQL 16 local para desarrollo y tests. Neon pendiente de deploy.
 - **Dominio:** `duolan.online`, DNS en Hostinger.
 - **API:** `api.duolan.online`.
@@ -45,8 +45,23 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - Seeds y fixtures actualizados a Riot IDs `#LAN` y países LAN.
 - Branding backend cambiado a Duo LAN y `duolan.online`.
 - Tests: 133 de API (126 base + 7 LAN) y 1 de Angular. Lint y build verdes.
-- Pendiente por bloqueo: ramas `main`/`dev`, commit, push y deploy.
+- Resuelto: rama `dev` publicada en `origin/dev`; `main` sigue intacta.
 - Pendiente de configuración: `OWNER_EMAIL`, `ADMIN_EMAIL` en Render y `ADMIN_PASSWORD`.
+
+## Avance Fase 2 (2026-10-30)
+
+- `AuthService` con signals, persistencia de token/usuario y restauración de sesión.
+- Guards funcionales: `authGuard`, `playerGuard`, `adminGuard` y `profileCompletedGuard`.
+- Interceptores JWT y 401 sin loops, con exclusión de endpoints y rutas públicas de auth.
+- `ApiService` + servicios tipados para perfiles, matching, disponibilidad, invites, Busco 1, ARAM, notificaciones, trust y admin.
+- DTOs compartidos derivados de `packages/shared`, sin importar Zod al bundle.
+- Manejo de errores con `ApiError`, `ErrorHandler` global, pantalla `/error` y toasts.
+- Shells `AppShell`, `AuthShell` y `AdminShell`; rutas lazy y placeholders de paridad.
+- UI compartida: botones, inputs, selects, cards, badges, skeletons, dialog, RankIcon, RoleIcon, CountryBadge, PlayerPreviewCard y RiotDisclaimer.
+- Login técnico funcional contra la API LAN y redirección por rol/perfil.
+- Tests: 22 de Angular (AuthService, guards, interceptores y formulario de login).
+- Fase 2 cerrada técnicamente; commit y push a `dev` al finalizar.
+- Pendiente: SSE service se implementa en Fase 4 junto con notificaciones.
 
 ## Leyenda
 
@@ -166,48 +181,48 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - [x] Configurar Tailwind CSS 4 con tokens de Duo LAN.
 - [x] Configurar Montserrat.
 - [x] Configurar `provideRouter` con lazy loading.
-- [ ] Configurar `provideHttpClient(withInterceptors([...]))`.
-- [ ] Configurar `ErrorHandler` global.
+- [x] Configurar `provideHttpClient(withInterceptors([...]))`.
+- [x] Configurar `ErrorHandler` global.
 - [x] Configurar environments de desarrollo y producción.
 - [x] Configurar proxy local hacia la API.
 
 ### Core
 
-- [ ] Crear `AuthService` con signals.
-- [ ] Persistir token y usuario en `localStorage`.
-- [ ] Crear `authGuard`.
-- [ ] Crear `adminGuard`.
-- [ ] Crear `profileCompletedGuard`.
-- [ ] Crear interceptor JWT.
-- [ ] Crear interceptor 401 sin loops.
-- [ ] Excluir endpoints de auth del redirect.
-- [ ] Crear `ApiService` base y servicios por módulo.
-- [ ] Crear DTOs tipados para auth, perfiles, matching, disponibilidad, posts, ARAM, invites, notificaciones, trust y admin.
-- [ ] Crear manejo de errores 422/401/403/409/429.
-- [ ] Crear sistema de toasts.
-- [ ] Crear `ErrorBoundary` o pantalla global de error.
+- [x] Crear `AuthService` con signals.
+- [x] Persistir token y usuario en `localStorage`.
+- [x] Crear `authGuard`.
+- [x] Crear `adminGuard`.
+- [x] Crear `profileCompletedGuard`.
+- [x] Crear interceptor JWT.
+- [x] Crear interceptor 401 sin loops.
+- [x] Excluir endpoints de auth del redirect.
+- [x] Crear `ApiService` base y servicios por módulo.
+- [x] Crear DTOs tipados para auth, perfiles, matching, disponibilidad, posts, ARAM, invites, notificaciones, trust y admin.
+- [x] Crear manejo de errores 422/401/403/409/429.
+- [x] Crear sistema de toasts.
+- [x] Crear `ErrorBoundary` o pantalla global de error.
 
 ### Shared UI
 
-- [ ] Botones, inputs, selects, cards, badges y skeletons.
-- [ ] `AppShell`.
-- [ ] `AuthShell`.
-- [ ] `AdminShell`.
-- [ ] `BetaBadge`.
-- [ ] `RankIcon`.
-- [ ] `RoleIcon`.
-- [ ] `CountryBadge`.
-- [ ] `PlayerPreviewCard`.
-- [ ] Dialogs de confirmación.
-- [ ] `RiotDisclaimer`.
+- [x] Botones, inputs, selects, cards, badges y skeletons.
+- [x] `AppShell`.
+- [x] `AuthShell`.
+- [x] `AdminShell`.
+- [x] `BetaBadge`.
+- [x] `RankIcon`.
+- [x] `RoleIcon`.
+- [x] `CountryBadge`.
+- [x] `PlayerPreviewCard`.
+- [x] Dialogs de confirmación.
+- [x] `RiotDisclaimer`.
 
 ### Tests
 
-- [ ] Tests de AuthService.
-- [ ] Tests de guards.
-- [ ] Tests de interceptores.
-- [ ] Tests de SSE service.
-- [ ] Tests de formularios críticos.
+- [x] Tests de AuthService.
+- [x] Tests de guards.
+- [x] Tests de interceptores.
+- [~] Tests de SSE service (se implementa en Fase 4 con notificaciones).
+- [x] Tests de formularios críticos.
 
 **DoD:** shell Angular navegable, login técnico, guards e interceptores probados, diseño base funcionando en mobile y desktop.
 

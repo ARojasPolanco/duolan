@@ -6,7 +6,10 @@
   "main": "src/index.js",
   "exports": {
     ".": "./src/index.js",
-    "./constants": "./src/constants.js"
+    "./constants": {
+      "types": "./src/constants.d.ts",
+      "default": "./src/constants.js"
+    }
   },
   "scripts": {},
   "dependencies": {
