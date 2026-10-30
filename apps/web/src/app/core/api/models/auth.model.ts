@@ -33,6 +33,7 @@ export interface AuthResponse {
   status: 'success';
   token: string;
   user: AuthUser;
+  recovered?: boolean;
 }
 
 export interface AuthProfileResponse {
@@ -46,6 +47,16 @@ export interface ChangePasswordRequest {
 }
 
 export type ChangePasswordResponse = AuthResponse;
+
+export interface MessageResponse {
+  status: 'success';
+  message: string;
+}
+
+export type VerifyEmailResponse = MessageResponse;
+export type ResendVerificationResponse = MessageResponse;
+export type ForgotPasswordResponse = MessageResponse;
+export type ResetPasswordResponse = MessageResponse;
 
 export interface DeleteAccountRequest {
   password: string;

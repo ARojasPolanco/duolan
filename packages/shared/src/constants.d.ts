@@ -22,6 +22,7 @@ export type Country =
 
 export const GAME_SERVERS: readonly GameServer[];
 export const USER_ROLES: readonly UserRole[];
+export const RESERVED_USERNAMES: readonly string[];
 export const USER_STATUSES: readonly UserStatus[];
 export const ROLES: readonly Role[];
 export const RANK_TIERS: readonly RankTier[];

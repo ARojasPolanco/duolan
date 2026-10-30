@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { BetaBadgeComponent } from '../../../shared/icons/beta-badge.component';
@@ -113,6 +113,15 @@ import { LanguageToggleComponent } from '../../../shared/ui/language-toggle.comp
 })
 export class LandingPage {
   private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
   protected readonly i18n = inject(I18nService);
   protected readonly isAuthenticated = computed(() => this.auth.isAuthenticated());
+
+  constructor() {
+    if (this.auth.isAuthenticated()) {
+      void this.router.navigate([this.auth.isAdmin() ? '/admin' : '/inicio'], {
+        replaceUrl: true,
+      });
+    }
+  }
 }

@@ -7,8 +7,13 @@ import type {
   AuthProfileResponse,
   AuthResponse,
   AuthUser,
+  ForgotPasswordResponse,
+  DeleteAccountResponse,
   LoginRequest,
   RegisterRequest,
+  ResendVerificationResponse,
+  ResetPasswordResponse,
+  VerifyEmailResponse,
 } from '../api/models/auth.model';
 
 const TOKEN_KEY = 'duolan_token';
@@ -68,6 +73,26 @@ export class AuthService {
       tap((response) => this.setSession(response.token, response.user)),
       map((response) => response.user),
     );
+  }
+
+  verifyEmail(token: string): Observable<VerifyEmailResponse> {
+    return this.api.get<VerifyEmailResponse>('/auth/verify-email', { token });
+  }
+
+  resendVerification(): Observable<ResendVerificationResponse> {
+    return this.api.post<ResendVerificationResponse>('/auth/resend-verification');
+  }
+
+  forgotPassword(email: string): Observable<ForgotPasswordResponse> {
+    return this.api.post<ForgotPasswordResponse>('/auth/forgot-password', { email });
+  }
+
+  resetPassword(token: string, password: string): Observable<ResetPasswordResponse> {
+    return this.api.post<ResetPasswordResponse>('/auth/reset-password', { token, password });
+  }
+
+  deleteAccount(password: string): Observable<DeleteAccountResponse> {
+    return this.api.delete<DeleteAccountResponse>('/auth/account', { password });
   }
 
   refreshProfile(): Observable<AuthUser> {

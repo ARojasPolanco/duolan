@@ -1,4 +1,6 @@
-export const ES = {
+import { PHASE3_EN, PHASE3_ES } from './phase3-translations';
+
+const BASE_ES = {
   'common.beta': 'Beta',
   'common.terms': 'Términos',
   'common.privacy': 'Privacidad',
@@ -113,9 +115,11 @@ export const ES = {
   'placeholder.fallbackDescription': 'Esta funcionalidad todavía no está conectada.',
 } as const;
 
+export const ES = { ...BASE_ES, ...PHASE3_ES } as const;
+
 export type TranslationKey = keyof typeof ES;
 
-export const EN: Record<TranslationKey, string> = {
+const BASE_EN: Record<keyof typeof BASE_ES, string> = {
   'common.beta': 'Beta',
   'common.terms': 'Terms',
   'common.privacy': 'Privacy',
@@ -228,3 +232,5 @@ export const EN: Record<TranslationKey, string> = {
   'placeholder.fallbackTitle': 'Coming soon',
   'placeholder.fallbackDescription': "This feature isn't connected yet.",
 };
+
+export const EN: Record<TranslationKey, string> = { ...BASE_EN, ...PHASE3_EN };

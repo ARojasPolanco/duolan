@@ -87,10 +87,11 @@ export interface ProfileQuery {
 export interface UsernameChangeRequest {
   id: string;
   status: 'pending_user' | 'pending_admin' | 'approved' | 'rejected';
-  currentUsername: string;
-  proposedUsername: string | null;
-  note: string | null;
+  suggestedUsername: string | null;
+  adminNote: string | null;
+  resolutionNote: string | null;
   createdAt: string;
+  updatedAt: string;
   resolvedAt: string | null;
 }
 

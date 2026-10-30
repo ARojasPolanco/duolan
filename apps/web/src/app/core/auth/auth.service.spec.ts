@@ -115,6 +115,16 @@ describe('AuthService', () => {
     expect(service.isAuthenticated()).toBe(false);
   });
 
+  it('programa la eliminación de cuenta con DELETE y contraseña', async () => {
+    api.delete.mockReturnValue(
+      of({ status: 'success', deletionScheduledFor: '2026-11-29T00:00:00.000Z' }),
+    );
+
+    await firstValueFrom(service.deleteAccount('password123'));
+
+    expect(api.delete).toHaveBeenCalledWith('/auth/account', { password: 'password123' });
+  });
+
   it('limpia la sesión si el perfil restaurado falla', async () => {
     service.setSession('stored-token', player);
     api.get.mockReturnValue(throwError(() => new Error('401')));

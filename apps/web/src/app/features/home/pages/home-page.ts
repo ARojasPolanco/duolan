@@ -4,13 +4,16 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ButtonComponent } from '../../../shared/ui/button.component';
 import { CardComponent } from '../../../shared/ui/card.component';
+import { EmailVerificationBannerComponent } from '../../../shared/ui/email-verification-banner.component';
 
 @Component({
   selector: 'app-home-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, ButtonComponent, CardComponent],
+  imports: [RouterLink, ButtonComponent, CardComponent, EmailVerificationBannerComponent],
   template: `
     <div class="grid gap-5">
+      <app-email-verification-banner />
+
       <header class="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-accent">

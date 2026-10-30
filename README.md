@@ -6,9 +6,9 @@ Duo LAN es un producto separado de Duo LAS. No comparte base de datos, secretos,
 
 ## Estado
 
-- **Fase actual:** Fases 0, 1 y 2 implementadas. Siguiente: Fase 3 (público, auth y onboarding).
+- **Fase actual:** Fases 0, 1, 2 y 3 implementadas. Siguiente: Fase 4 (match y notificaciones).
 - **Backend:** copia adaptada de Duo LAS con `GAME_SERVER=LAN`, migración `019_region_lan`, países LAN, timezone `America/Mexico_City` y branding Duo LAN.
-- **Frontend:** base Angular 21 con auth, guards, interceptores, DTOs, servicios, shells, UI compartida y selector de idioma ES/EN. Las features llegan en las fases 3 a 5.
+- **Frontend:** Angular 21 con flujo público, auth, onboarding, perfil, legales y selector de idioma ES/EN. Faltan match, notificaciones, disponibilidad e invitaciones.
 - **Base de datos:** PostgreSQL 16 local o Neon. Sin datos migrados desde Duo LAS.
 - **Deploy:** pendiente. Render free para la API, Vercel para la web y Neon para la DB.
 - **Ramas:** `dev` para desarrollo y `main` para producción. No se hizo commit inicial todavía.

@@ -23,53 +23,65 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    ...placeholder(
-      'Crear cuenta',
-      'El registro con +18, términos y hCaptcha se implementa en la Fase 3.',
-    ),
+    loadComponent: () =>
+      import('./features/auth/pages/register-page').then((module) => module.RegisterPage),
     title: 'Crear cuenta - Duo LAN',
   },
   {
     path: 'verify-email',
-    ...placeholder('Verificar email', 'La verificación de email se implementa en la Fase 3.'),
+    loadComponent: () =>
+      import('./features/auth/pages/verify-email-page').then((module) => module.VerifyEmailPage),
     title: 'Verificar email - Duo LAN',
   },
   {
     path: 'forgot-password',
-    ...placeholder('Recuperar contraseña', 'La recuperación se implementa en la Fase 3.'),
+    loadComponent: () =>
+      import('./features/auth/pages/forgot-password-page').then(
+        (module) => module.ForgotPasswordPage,
+      ),
     title: 'Recuperar contraseña - Duo LAN',
   },
   {
     path: 'reset-password',
-    ...placeholder('Nueva contraseña', 'El reset de contraseña se implementa en la Fase 3.'),
+    loadComponent: () =>
+      import('./features/auth/pages/reset-password-page').then(
+        (module) => module.ResetPasswordPage,
+      ),
     title: 'Nueva contraseña - Duo LAN',
   },
   {
     path: 'cuenta-eliminada',
-    ...placeholder('Cuenta eliminada', 'La baja programada se implementa en la Fase 3.'),
+    loadComponent: () =>
+      import('./features/auth/pages/account-deleted-page').then(
+        (module) => module.AccountDeletedPage,
+      ),
     title: 'Cuenta eliminada - Duo LAN',
   },
   {
     path: 'como-funciona',
-    ...placeholder(
-      'Cómo funciona',
-      'La guía pública de Match, Disponible ya, Busco 1 y ARAM se implementa en la Fase 3.',
-    ),
+    loadComponent: () =>
+      import('./features/public/pages/how-it-works-page').then((module) => module.HowItWorksPage),
     title: 'Cómo funciona - Duo LAN',
   },
   {
     path: 'terminos',
-    ...placeholder('Términos de uso', 'Los términos legales se copian y adaptan en la Fase 3.'),
+    loadComponent: () =>
+      import('./features/public/pages/legal-page').then((module) => module.LegalPage),
+    data: { doc: 'terms' },
     title: 'Términos - Duo LAN',
   },
   {
     path: 'privacidad',
-    ...placeholder('Política de privacidad', 'La política de privacidad se adapta en la Fase 3.'),
+    loadComponent: () =>
+      import('./features/public/pages/legal-page').then((module) => module.LegalPage),
+    data: { doc: 'privacy' },
     title: 'Privacidad - Duo LAN',
   },
   {
     path: 'aviso-riot',
-    ...placeholder('Aviso de Riot', 'El aviso legal completo de Riot se implementa en la Fase 3.'),
+    loadComponent: () =>
+      import('./features/public/pages/legal-page').then((module) => module.LegalPage),
+    data: { doc: 'riot' },
     title: 'Aviso de Riot - Duo LAN',
   },
   {
@@ -137,20 +149,24 @@ export const routes: Routes = [
       },
       {
         path: 'perfil',
-        ...placeholder('Mi perfil', 'El perfil propio se implementa en la Fase 3.'),
+        loadComponent: () =>
+          import('./features/profile/pages/profile-page').then((module) => module.ProfilePage),
         title: 'Mi perfil - Duo LAN',
       },
       {
         path: 'perfil/:id',
-        ...placeholder('Perfil público', 'El perfil público se implementa en la Fase 3.'),
+        loadComponent: () =>
+          import('./features/profile/pages/public-profile-page').then(
+            (module) => module.PublicProfilePage,
+          ),
         title: 'Perfil - Duo LAN',
       },
       {
         path: 'solicitud-username',
-        ...placeholder(
-          'Solicitud de username',
-          'El cambio de username asistido se implementa en la Fase 3.',
-        ),
+        loadComponent: () =>
+          import('./features/username-request/pages/username-request-page').then(
+            (module) => module.UsernameRequestPage,
+          ),
         title: 'Solicitud de username - Duo LAN',
       },
     ],

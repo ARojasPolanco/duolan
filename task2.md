@@ -4,10 +4,10 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 
 ## Estado actual
 
-- **Fase:** Fases 0, 1 y 2 completadas. Siguiente: Fase 3 (público, auth y onboarding).
+- **Fase:** Fases 0, 1, 2 y 3 completadas. Siguiente: Fase 4 (match y notificaciones).
 - **Repo:** rama `dev` publicada en `origin/dev`; `main` no se tocó todavía.
 - **Backend:** copia adaptada de Duo LAS con `GAME_SERVER=LAN`, migración LAN y branding Duo LAN.
-- **Frontend:** base Angular 21 completa con auth, guards, interceptores, DTOs, servicios, shells y UI compartida. Features pendientes.
+- **Frontend:** flujo público, auth, onboarding, perfil y legales completos en Angular 21. Faltan match, notificaciones, disponibilidad e invitaciones.
 - **Base de datos:** PostgreSQL 16 local para desarrollo y tests. Neon pendiente de deploy.
 - **Dominio:** `duolan.online`, DNS en Hostinger.
 - **API:** `api.duolan.online`.
@@ -64,6 +64,19 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - Idioma ES/EN agregado con selector persistente en la app y en las pantallas públicas.
 - Fase 2 cerrada técnicamente; commit y push a `dev` al finalizar.
 - Pendiente: SSE service se implementa en Fase 4 junto con notificaciones.
+
+## Avance Fase 3 (2026-10-30)
+
+- Registro con +18, términos, hCaptcha condicional, verificación de email y reenvío.
+- Forgot/reset, cuenta programada para eliminación y recuperación de sesión.
+- Onboarding de 7 pasos con Reactive Forms tipados, validaciones y persistencia.
+- Perfil propio editable, perfil público sin datos de contacto y solicitud de username con estados.
+- Landing final, cómo funciona, términos, privacidad y aviso de Riot bilingües.
+- Textos legales adaptados a Duo LAN, LAN y jurisdicción Argentina.
+- Selector de idioma ES/EN en las pantallas nuevas y traducciones de Fase 3.
+- Tests: 32 de Angular (auth, guards, interceptores, i18n, profile form y registro).
+- Smoke E2E manual con Chrome headless: registro, onboarding completo, perfil, perfil público, username y legales en inglés.
+- Pendiente de configuración: site key/secret de hCaptcha; mensajes de error del backend siguen en español.
 
 ## Leyenda
 
@@ -234,69 +247,69 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 
 ### Rutas públicas
 
-- [ ] Landing `/`.
-- [ ] Cómo funciona `/como-funciona`.
-- [ ] Login `/login`.
-- [ ] Registro `/register`.
-- [ ] Verificación `/verify-email`.
-- [ ] Forgot `/forgot-password`.
-- [ ] Reset `/reset-password`.
-- [ ] Cuenta eliminada `/cuenta-eliminada`.
-- [ ] Términos `/terminos`.
-- [ ] Privacidad `/privacidad`.
-- [ ] Aviso Riot `/aviso-riot`.
-- [ ] 404.
+- [x] Landing `/`.
+- [x] Cómo funciona `/como-funciona`.
+- [x] Login `/login`.
+- [x] Registro `/register`.
+- [x] Verificación `/verify-email`.
+- [x] Forgot `/forgot-password`.
+- [x] Reset `/reset-password`.
+- [x] Cuenta eliminada `/cuenta-eliminada`.
+- [x] Términos `/terminos`.
+- [x] Privacidad `/privacidad`.
+- [x] Aviso Riot `/aviso-riot`.
+- [x] 404.
 
 ### Auth
 
-- [ ] Registro con +18, términos y hCaptcha.
-- [ ] Verificación por email.
-- [ ] Login con email o username.
-- [ ] Logout.
-- [ ] Forgot/reset.
-- [ ] Manejo de suspensión.
-- [ ] Manejo de cuenta pendiente de eliminación.
-- [ ] Redirect de admin a `/admin`.
-- [ ] Redirect de usuario logueado desde landing.
+- [x] Registro con +18, términos y hCaptcha (site key pendiente de configurar en producción).
+- [x] Verificación por email.
+- [x] Login con email o username.
+- [x] Logout.
+- [x] Forgot/reset.
+- [x] Manejo de suspensión.
+- [x] Manejo de cuenta pendiente de eliminación.
+- [x] Redirect de admin a `/admin`.
+- [x] Redirect de usuario logueado desde landing.
 
 ### Onboarding
 
-- [ ] Paso Riot ID.
-- [ ] Paso roles.
-- [ ] Paso rango Solo/Dúo y Flex.
-- [ ] Paso horarios.
-- [ ] Paso estilo e idiomas.
-- [ ] Paso contacto opcional.
-- [ ] Paso resumen.
-- [ ] Reactive Forms tipados.
-- [ ] Validaciones equivalentes a Zod.
-- [ ] Manejo de país y timezone LAN.
-- [ ] Persistencia de perfil.
-- [ ] Redirección a `/inicio` al completar.
+- [x] Paso Riot ID.
+- [x] Paso roles.
+- [x] Paso rango Solo/Dúo y Flex.
+- [x] Paso horarios.
+- [x] Paso estilo e idiomas.
+- [x] Paso contacto opcional.
+- [x] Paso resumen.
+- [x] Reactive Forms tipados.
+- [x] Validaciones equivalentes a Zod.
+- [x] Manejo de país y timezone LAN.
+- [x] Persistencia de perfil.
+- [x] Redirección a `/inicio` al completar.
 
 ### Perfil y username
 
-- [ ] Perfil propio `/perfil`.
-- [ ] Edición de Riot ID, país, roles, rangos, horarios, contacto y bio.
-- [ ] Perfil público `/perfil/:id`.
-- [ ] Solicitud de cambio de username `/solicitud-username`.
-- [ ] Estados pendiente, aprobada y rechazada.
+- [x] Perfil propio `/perfil`.
+- [x] Edición de Riot ID, país, roles, rangos, horarios, contacto y bio.
+- [x] Perfil público `/perfil/:id`.
+- [x] Solicitud de cambio de username `/solicitud-username`.
+- [x] Estados pendiente, aprobada y rechazada.
 
 ### Legal
 
-- [ ] Copiar textos legales.
-- [ ] Reemplazar LAS por LAN.
-- [ ] Mantener jurisdicción Argentina.
-- [ ] Actualizar disclaimer de Riot.
-- [ ] Actualizar emails de soporte.
-- [ ] Verificar URLs directas.
+- [x] Copiar textos legales.
+- [x] Reemplazar LAS por LAN.
+- [x] Mantener jurisdicción Argentina.
+- [x] Actualizar disclaimer de Riot.
+- [x] Actualizar emails de soporte.
+- [x] Verificar URLs directas.
 
 ### Idioma
 
 - [x] Infraestructura ES/EN con `I18nService` y persistencia en `duolan_language`.
 - [x] Selector de idioma en app, landing, auth, onboarding y admin.
 - [x] Traducir las pantallas existentes de Fase 2.
-- [ ] Traducir todas las pantallas nuevas de Fase 3.
+- [x] Traducir todas las pantallas nuevas de Fase 3.
 - [ ] Traducir mensajes de error del backend o mapearlos en el frontend.
 
 **DoD:** registro, verificación, login, onboarding y perfil funcionando contra la API LAN.
