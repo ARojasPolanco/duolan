@@ -33,6 +33,7 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - [x] Render free inicialmente, asumiendo limitaciones de SSE.
 - [x] Sin Riot API/RSO en el MVP.
 - [x] Sin multi-región: esta instancia solo atiende LAN.
+- [x] Interfaz bilingüe ES/EN con español por defecto y selector persistente.
 
 ## Avance Fase 0/1 (2026-10-30)
 
@@ -59,7 +60,8 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - Shells `AppShell`, `AuthShell` y `AdminShell`; rutas lazy y placeholders de paridad.
 - UI compartida: botones, inputs, selects, cards, badges, skeletons, dialog, RankIcon, RoleIcon, CountryBadge, PlayerPreviewCard y RiotDisclaimer.
 - Login técnico funcional contra la API LAN y redirección por rol/perfil.
-- Tests: 22 de Angular (AuthService, guards, interceptores y formulario de login).
+- Tests: 25 de Angular (AuthService, guards, interceptores, formulario de login e i18n).
+- Idioma ES/EN agregado con selector persistente en la app y en las pantallas públicas.
 - Fase 2 cerrada técnicamente; commit y push a `dev` al finalizar.
 - Pendiente: SSE service se implementa en Fase 4 junto con notificaciones.
 
@@ -288,6 +290,14 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - [ ] Actualizar disclaimer de Riot.
 - [ ] Actualizar emails de soporte.
 - [ ] Verificar URLs directas.
+
+### Idioma
+
+- [x] Infraestructura ES/EN con `I18nService` y persistencia en `duolan_language`.
+- [x] Selector de idioma en app, landing, auth, onboarding y admin.
+- [x] Traducir las pantallas existentes de Fase 2.
+- [ ] Traducir todas las pantallas nuevas de Fase 3.
+- [ ] Traducir mensajes de error del backend o mapearlos en el frontend.
 
 **DoD:** registro, verificación, login, onboarding y perfil funcionando contra la API LAN.
 

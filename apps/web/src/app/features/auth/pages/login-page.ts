@@ -11,6 +11,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { toUserMessage } from '../../../core/api/api-error';
 import { AuthService } from '../../../core/auth/auth.service';
+import { I18nService } from '../../../core/i18n/i18n.service';
 import { AuthShellComponent } from '../../../shared/layout/auth-shell.component';
 import { ButtonComponent } from '../../../shared/ui/button.component';
 import { TextInputComponent } from '../../../shared/ui/text-input.component';
@@ -26,21 +27,18 @@ import { TextInputComponent } from '../../../shared/ui/text-input.component';
     TextInputComponent,
   ],
   template: `
-    <app-auth-shell
-      title="Iniciar sesión"
-      subtitle="Entrá con tu email o nombre de usuario para buscar duo en LAN."
-    >
+    <app-auth-shell [title]="i18n.t('login.title')" [subtitle]="i18n.t('login.subtitle')">
       <form class="grid gap-4" [formGroup]="form" (ngSubmit)="submit()" novalidate>
         <app-text-input
           formControlName="identifier"
-          label="Email o nombre de usuario"
+          [label]="i18n.t('login.identifierLabel')"
           autocomplete="username"
           placeholder="tu@email.com"
           [error]="identifierError()"
         />
         <app-text-input
           formControlName="password"
-          label="Contraseña"
+          [label]="i18n.t('login.passwordLabel')"
           type="password"
           autocomplete="current-password"
           [error]="passwordError()"
@@ -52,17 +50,19 @@ import { TextInputComponent } from '../../../shared/ui/text-input.component';
           </p>
         }
 
-        <app-button type="submit" [fullWidth]="true" [loading]="submitting()"> Entrar </app-button>
+        <app-button type="submit" [fullWidth]="true" [loading]="submitting()">
+          {{ i18n.t('login.submit') }}
+        </app-button>
       </form>
 
       <div footer class="grid gap-2">
         <a routerLink="/forgot-password" class="font-semibold text-accent hover:underline">
-          ¿Olvidaste tu contraseña?
+          {{ i18n.t('login.forgot') }}
         </a>
         <p>
-          ¿No tenés cuenta?
+          {{ i18n.t('login.noAccount') }}
           <a routerLink="/register" class="font-semibold text-accent hover:underline">
-            Crear cuenta
+            {{ i18n.t('common.register') }}
           </a>
         </p>
       </div>
@@ -74,6 +74,7 @@ export class LoginPage {
   private readonly router = inject(Router);
   private readonly formBuilder = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
+  protected readonly i18n = inject(I18nService);
 
   readonly redirect = input('');
 
@@ -86,12 +87,16 @@ export class LoginPage {
 
   protected identifierError(): string {
     const control = this.form.controls.identifier;
-    return control.touched && control.hasError('required') ? 'Ingresá tu email o username.' : '';
+    return control.touched && control.hasError('required')
+      ? this.i18n.t('login.identifierRequired')
+      : '';
   }
 
   protected passwordError(): string {
     const control = this.form.controls.password;
-    return control.touched && control.hasError('required') ? 'Ingresá tu contraseña.' : '';
+    return control.touched && control.hasError('required')
+      ? this.i18n.t('login.passwordRequired')
+      : '';
   }
 
   protected submit(): void {

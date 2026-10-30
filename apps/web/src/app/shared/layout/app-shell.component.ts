@@ -8,22 +8,25 @@ import {
 } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
+import { I18nService } from '../../core/i18n/i18n.service';
+import type { TranslationKey } from '../../core/i18n/translations';
 import { initialsOf } from '../../core/utils/labels';
 import { BetaBadgeComponent } from '../icons/beta-badge.component';
 import { RiotDisclaimerComponent } from '../legal/riot-disclaimer.component';
+import { LanguageToggleComponent } from '../ui/language-toggle.component';
 
 interface ShellLink {
   path: string;
-  label: string;
+  labelKey: TranslationKey;
 }
 
 const PRIMARY_LINKS: ShellLink[] = [
-  { path: '/inicio', label: 'Inicio' },
-  { path: '/match', label: 'Match' },
-  { path: '/aram', label: 'ARAM' },
-  { path: '/disponible', label: 'Disponible' },
-  { path: '/busco-1', label: 'Busco 1' },
-  { path: '/matches', label: 'Matches' },
+  { path: '/inicio', labelKey: 'common.home' },
+  { path: '/match', labelKey: 'common.match' },
+  { path: '/aram', labelKey: 'common.aram' },
+  { path: '/disponible', labelKey: 'common.available' },
+  { path: '/busco-1', labelKey: 'common.lookingForOne' },
+  { path: '/matches', labelKey: 'common.matches' },
 ];
 
 @Component({
@@ -35,6 +38,7 @@ const PRIMARY_LINKS: ShellLink[] = [
     RouterLinkActive,
     BetaBadgeComponent,
     RiotDisclaimerComponent,
+    LanguageToggleComponent,
   ],
   template: `
     <div class="min-h-screen bg-bg text-text">
@@ -48,14 +52,17 @@ const PRIMARY_LINKS: ShellLink[] = [
             <app-beta-badge />
           </a>
 
-          <nav class="ml-4 hidden items-center gap-1 lg:flex" aria-label="Navegación principal">
+          <nav
+            class="ml-4 hidden items-center gap-1 lg:flex"
+            [attr.aria-label]="i18n.t('common.mainNav')"
+          >
             @for (link of primaryLinks; track link.path) {
               <a
                 [routerLink]="link.path"
                 routerLinkActive="bg-accent/15 text-accent"
                 class="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition hover:bg-surface-2 hover:text-text"
               >
-                {{ link.label }}
+                {{ i18n.t(link.labelKey) }}
               </a>
             }
             <a
@@ -63,15 +70,16 @@ const PRIMARY_LINKS: ShellLink[] = [
               routerLinkActive="bg-accent/15 text-accent"
               class="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition hover:bg-surface-2 hover:text-text"
             >
-              Invitaciones
+              {{ i18n.t('common.invitations') }}
             </a>
           </nav>
 
           <div class="ml-auto flex items-center gap-2">
+            <app-language-toggle />
             <a
               routerLink="/notificaciones"
               class="relative flex h-11 w-11 items-center justify-center rounded-xl border border-border text-muted transition hover:border-accent/50 hover:text-text"
-              aria-label="Notificaciones"
+              [attr.aria-label]="i18n.t('common.notifications')"
             >
               <svg
                 width="18"
@@ -94,7 +102,7 @@ const PRIMARY_LINKS: ShellLink[] = [
                 class="flex h-11 items-center gap-2 rounded-xl border border-border px-2 transition hover:border-accent/50"
                 aria-haspopup="menu"
                 [attr.aria-expanded]="menuOpen()"
-                aria-label="Menú de cuenta"
+                [attr.aria-label]="i18n.t('common.accountMenu')"
               >
                 <span
                   class="flex h-7 w-7 items-center justify-center rounded-lg bg-surface-2 text-[10px] font-extrabold text-accent"
@@ -136,7 +144,7 @@ const PRIMARY_LINKS: ShellLink[] = [
                       (click)="closeMenu()"
                       class="flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-muted transition hover:bg-surface-2 hover:text-text"
                     >
-                      Mi perfil
+                      {{ i18n.t('common.myProfile') }}
                     </a>
                     <a
                       routerLink="/como-funciona"
@@ -144,7 +152,7 @@ const PRIMARY_LINKS: ShellLink[] = [
                       (click)="closeMenu()"
                       class="flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-muted transition hover:bg-surface-2 hover:text-text"
                     >
-                      Cómo funciona
+                      {{ i18n.t('common.howItWorks') }}
                     </a>
                     <a
                       routerLink="/notificaciones"
@@ -152,7 +160,7 @@ const PRIMARY_LINKS: ShellLink[] = [
                       (click)="closeMenu()"
                       class="flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-muted transition hover:bg-surface-2 hover:text-text"
                     >
-                      Notificaciones
+                      {{ i18n.t('common.notifications') }}
                     </a>
                   </div>
 
@@ -163,7 +171,7 @@ const PRIMARY_LINKS: ShellLink[] = [
                       (click)="logout()"
                       class="flex min-h-11 w-full items-center gap-2 rounded-xl px-3 text-left text-sm font-semibold text-muted transition hover:bg-surface-2 hover:text-text"
                     >
-                      Cerrar sesión
+                      {{ i18n.t('common.logout') }}
                     </button>
                   </div>
                 </div>
@@ -182,28 +190,26 @@ const PRIMARY_LINKS: ShellLink[] = [
               routerLink="/como-funciona"
               class="inline-flex min-h-11 items-center hover:text-text"
             >
-              Cómo funciona
+              {{ i18n.t('common.howItWorks') }}
             </a>
             <a routerLink="/terminos" class="inline-flex min-h-11 items-center hover:text-text">
-              Términos
+              {{ i18n.t('common.terms') }}
             </a>
             <a routerLink="/privacidad" class="inline-flex min-h-11 items-center hover:text-text">
-              Privacidad
+              {{ i18n.t('common.privacy') }}
             </a>
             <a routerLink="/aviso-riot" class="inline-flex min-h-11 items-center hover:text-text">
-              Aviso de Riot
+              {{ i18n.t('common.riotNotice') }}
             </a>
           </nav>
           <app-riot-disclaimer class="mt-2 block max-w-4xl" />
-          <p class="mt-2 text-[11px] text-muted">
-            Duo LAN está en beta: pueden haber cambios y errores mientras lo probamos.
-          </p>
+          <p class="mt-2 text-[11px] text-muted">{{ i18n.t('common.betaNotice') }}</p>
         </footer>
       </main>
 
       <nav
         class="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-bg/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl lg:hidden"
-        aria-label="Navegación mobile"
+        [attr.aria-label]="i18n.t('common.mobileNav')"
       >
         <div class="mx-auto flex max-w-2xl items-stretch">
           @for (link of primaryLinks; track link.path) {
@@ -212,7 +218,7 @@ const PRIMARY_LINKS: ShellLink[] = [
               routerLinkActive="text-accent"
               class="flex min-h-14 flex-1 flex-col items-center justify-center px-1 text-[9px] font-semibold text-muted transition"
             >
-              {{ link.label }}
+              {{ i18n.t(link.labelKey) }}
             </a>
           }
         </div>
@@ -224,6 +230,7 @@ export class AppShellComponent {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
+  protected readonly i18n = inject(I18nService);
   protected readonly primaryLinks = PRIMARY_LINKS;
   protected readonly user = this.auth.user;
   protected readonly menuOpen = signal(false);

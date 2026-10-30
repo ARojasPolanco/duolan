@@ -337,3 +337,11 @@ Registro de decisiones de producto y técnica. Cada decisión nueva se agrega co
 **Decisión:** repositorio nuevo con historia limpia; backend copiado y adaptado; frontend Angular nuevo; DB Neon, Render, Vercel, Resend, hCaptcha y VAPID propios. `GAME_SERVER=LAN` es obligatorio, `RIOT_PLATFORM=la1` y la zona de referencia es `America/Mexico_City`. La migración `019_region_lan` permite `server IN ('LAS', 'LAN')` con default `LAN` y actualiza el check de países a la lista LAN. No se migran datos de Duo LAS.
 
 **Consecuencias:** el código permanece reutilizable para ambos servidores, pero esta instancia solo crea perfiles LAN. El matching filtra por `envs.GAME_SERVER`. Los servicios externos y secretos deben ser nuevos; `ADMIN_EMAIL` usa el mismo email que Duo LAS pero se configura solo en Render.
+
+## ADR-043 - Interfaz bilingüe ES/EN
+
+**Contexto:** DuoLAN debe permitir cambiar a inglés desde las etapas iniciales, sin agregar una dependencia de i18n ni duplicar texto en los componentes.
+
+**Decisión:** implementar I18nService propio con diccionarios tipados ES/EN, español por defecto, persistencia en localStorage (duolan_language) y actualización de document.documentElement.lang. Las cadenas visibles nuevas deben existir en ambos idiomas. El selector LanguageToggleComponent se muestra en la app autenticada y en las pantallas públicas principales.
+
+**Consecuencias:** el cambio de idioma es inmediato y no requiere recargar. Los mensajes que devuelve la API siguen en español hasta que se mapeen o se internacionalice el backend. Las pantallas placeholder se reemplazan por versiones traducidas al implementar cada feature.

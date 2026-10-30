@@ -245,6 +245,8 @@ Route → Controller (catchAsync) → Service → Model
 16. No usar Angular Material por defecto: el diseño es Tailwind y componentes propios.
 17. No usar NgRx en la primera versión.
 18. No usar SSR salvo decisión posterior. La landing puede prerenderizarse más adelante.
+19. La interfaz debe ser bilingüe ES/EN. Todo texto visible nuevo debe pasar por `I18nService` y existir en ambos idiomas.
+20. Español es el idioma por defecto. La elección se persiste en `localStorage` (`duolan_language`) y el botón de cambio está disponible en la app y en las pantallas públicas.
 
 ## 14. Estructura Angular
 
@@ -254,6 +256,7 @@ apps/web/src/app/
 │  ├─ api/            # servicios HTTP y DTOs
 │  ├─ auth/           # sesión, tokens, guards
 │  ├─ interceptors/   # JWT y 401
+│  ├─ i18n/           # ES/EN, persistencia y document.lang
 │  ├─ realtime/       # SSE y polling
 │  └─ config/         # environment, app config
 ├─ shared/
