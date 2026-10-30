@@ -1,0 +1,52 @@
+{
+  "name": "duolan",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @duolan/api",
+    "dev:web": "npm run start -w @duolan/web",
+    "build": "npm run build -w @duolan/web",
+    "build:api": "npm run build -w @duolan/api",
+    "lint": "eslint . && npm run lint -w @duolan/web",
+    "format": "prettier --write .",
+    "test": "npm run test -w @duolan/api",
+    "test:web": "npm run test -w @duolan/web",
+    "seed": "npm run seed -w @duolan/api",
+    "seed:admin": "npm run seed:admin -w @duolan/api",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:app": "docker compose --profile app up -d --build",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,json,md,yml,yaml}": [
+      "prettier --write"
+    ],
+    "*.{js,jsx}": [
+      "eslint --fix"
+    ],
+    "apps/web/**/*.{ts,html,css}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@eslint/js": "^9.39.0",
+    "eslint": "^9.39.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.6.2"
+  },
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10"
+  }
+}

@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+.angular/
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.env.test
+.env.docker
+.env.docker.prod
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

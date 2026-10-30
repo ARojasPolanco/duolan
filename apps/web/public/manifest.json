@@ -1,0 +1,25 @@
+{
+  "name": "Duo LAN",
+  "short_name": "Duo LAN",
+  "description": "Encontrá tu duo de League of Legends en LAN. Fase beta.",
+  "start_url": "/inicio",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#030407",
+  "theme_color": "#030407",
+  "lang": "es-MX",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

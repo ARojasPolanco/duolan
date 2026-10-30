@@ -1,0 +1,73 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+
+  --color-bg: #030407;
+  --color-surface: #060b14;
+  --color-surface-2: #0a1424;
+  --color-border: #1558c9;
+  --color-text: #f4f7fb;
+  --color-muted: #94a3b8;
+  --color-accent: #b0cf5c;
+  --color-accent-strong: #9fbf4f;
+  --color-gold: #f5c451;
+  --color-danger: #f87171;
+  --color-success: #34d399;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  app-root button,
+  app-root select,
+  app-root input:not([type='checkbox']):not([type='radio']),
+  app-root textarea {
+    min-height: 44px;
+  }
+
+  app-root button[aria-label] {
+    min-width: 44px;
+  }
+}
