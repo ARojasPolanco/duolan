@@ -151,7 +151,7 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - Modelos y servicios de admin ajustados a las respuestas reales del backend.
 - Smoke visual de las pantallas admin con `demo_admin`.
 - Tests: 41 de Angular; lint y build verdes.
-- Pendiente: métricas ARAM y pulido de calidad.
+- Pendiente: pulido de calidad.
 
 ## Leyenda
 
@@ -481,7 +481,7 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - [x] Aceptar postulación.
 - [x] Conexión `source='aram'`.
 - [x] Notificaciones y push.
-- [ ] Métricas ARAM.
+- [x] Métricas ARAM.
 
 ### Admin
 

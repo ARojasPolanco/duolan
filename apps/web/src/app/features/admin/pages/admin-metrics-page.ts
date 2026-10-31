@@ -37,7 +37,7 @@ const percent = (value: number | null): string =>
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Admin</p>
         <h1 class="mt-2 text-2xl font-extrabold sm:text-3xl">Métricas</h1>
         <p class="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
-          Resumen de los cuatro KPIs del MVP calculado desde la base de datos.
+          Resumen de los KPIs del MVP y de ARAM calculado desde la base de datos.
         </p>
       </header>
 
@@ -122,6 +122,17 @@ const percent = (value: number | null): string =>
               {{ metrics.concurrentAvailability.peak }}
             </p>
             <p class="mt-1 text-xs text-muted">p95: {{ metrics.concurrentAvailability.p95 }}</p>
+          </app-card>
+          <app-card padding="lg">
+            <p class="text-xs font-semibold text-muted">Conversión ARAM</p>
+            <p class="mt-4 text-3xl font-extrabold">
+              {{ percent(metrics.aram.conversionRate) }}
+            </p>
+            <p class="mt-1 text-xs text-muted">
+              {{ metrics.aram.postsCreated }} publicaciones ·
+              {{ metrics.aram.applicationsSent }} postulaciones ·
+              {{ metrics.aram.applicationsAccepted }} aceptadas
+            </p>
           </app-card>
         </div>
       }

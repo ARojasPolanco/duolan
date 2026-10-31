@@ -73,6 +73,7 @@ describe('Métricas', () => {
     expect(allowed.body.metrics).toHaveProperty('matchToGame');
     expect(allowed.body.metrics).toHaveProperty('retention7d');
     expect(allowed.body.metrics).toHaveProperty('concurrentAvailability');
+    expect(allowed.body.metrics).toHaveProperty('aram');
   });
 
   it('valida el rango de fechas', async () => {

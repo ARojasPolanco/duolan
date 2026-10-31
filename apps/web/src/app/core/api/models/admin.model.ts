@@ -247,6 +247,12 @@ export interface AdminMetrics {
     peak: number;
     p95: number;
   };
+  aram: {
+    postsCreated: number;
+    applicationsSent: number;
+    applicationsAccepted: number;
+    conversionRate: number | null;
+  };
 }
 
 export interface AdminMetricsSummary {

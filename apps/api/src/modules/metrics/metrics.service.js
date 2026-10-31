@@ -139,6 +139,19 @@ export class MetricsService {
       { bind, type: QueryTypes.SELECT }
     );
 
+    const [aram] = await sequelize.query(
+      `
+        SELECT
+          count(*) FILTER (WHERE type = 'aram_post_created') AS posts_created,
+          count(*) FILTER (WHERE type = 'aram_application_sent') AS applications_sent,
+          count(*) FILTER (WHERE type = 'aram_application_accepted') AS applications_accepted
+        FROM metrics_events
+        WHERE created_at >= $1
+          AND created_at < $2
+      `,
+      { bind, type: QueryTypes.SELECT }
+    );
+
     return {
       timeToFirstDuo: {
         medianHours: round(firstDuo?.median_hours, 2),
@@ -157,6 +170,15 @@ export class MetricsService {
       concurrentAvailability: {
         peak: toNumber(concurrent?.peak) || 0,
         p95: round(concurrent?.p95, 2) || 0,
+      },
+      aram: {
+        postsCreated: Number(aram?.posts_created || 0),
+        applicationsSent: Number(aram?.applications_sent || 0),
+        applicationsAccepted: Number(aram?.applications_accepted || 0),
+        conversionRate:
+          Number(aram?.applications_sent || 0) > 0
+            ? round(Number(aram?.applications_accepted || 0) / Number(aram.applications_sent))
+            : null,
       },
     };
   }
