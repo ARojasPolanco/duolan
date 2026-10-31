@@ -4,7 +4,7 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 
 ## Estado actual
 
-- **Fase:** Fases 0, 1, 2, 3 y 4 completadas. Fase 5 funcional completa: disponibilidad, invitaciones, Busco 1, ARAM y admin. Pendiente: card Conectados y pulido de calidad.
+- **Fase:** Fases 0 a 5 completadas. Siguiente: Fase 6 (frontend production).
 - **Repo:** rama `dev` publicada en `origin/dev`; `main` no se tocó todavía.
 - **Backend:** copia adaptada de Duo LAS con `GAME_SERVER=LAN`, migración LAN y branding Duo LAN.
 - **Frontend:** público, auth, onboarding, perfil, match, matches y notificaciones completos en Angular 21. Incluye disponibilidad, invitaciones, Busco 1, ARAM y admin.
@@ -151,7 +151,16 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - Modelos y servicios de admin ajustados a las respuestas reales del backend.
 - Smoke visual de las pantallas admin con `demo_admin`.
 - Tests: 41 de Angular; lint y build verdes.
-- Pendiente: pulido de calidad.
+- Admin completo; sin pendientes funcionales.
+
+## Cierre Fase 5 (2026-10-31)
+
+- Card "Conectados ahora" con usuarios, conexiones SSE y tickets, auto-refresh cada 30 s.
+- Métricas ARAM: publicaciones, postulaciones, aceptadas y conversión.
+- Calidad revisada: estados vacíos, skeletons, errores de red, responsive, desktop, accesibilidad básica, fechas LAN y copy sin LAS.
+- Smoke visual de admin, ARAM, Busco 1, disponibilidad e invitaciones.
+- Backend y frontend con tests, lint y build verdes.
+- Siguiente: Fase 6 (frontend production).
 
 ## Leyenda
 
@@ -500,14 +509,14 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 
 ### Calidad
 
-- [ ] Estados vacíos.
-- [ ] Skeletons.
-- [ ] Errores de red.
-- [ ] Responsive mobile-first.
-- [ ] Desktop.
-- [ ] Accesibilidad básica.
-- [ ] Fechas en `America/Mexico_City`.
-- [ ] Copy sin referencias a LAS.
+- [x] Estados vacíos.
+- [x] Skeletons.
+- [x] Errores de red.
+- [x] Responsive mobile-first.
+- [x] Desktop.
+- [x] Accesibilidad básica.
+- [x] Fechas en `America/Mexico_City`.
+- [x] Copy sin referencias a LAS.
 
 **DoD:** paridad funcional completa con Duo LAS, sin rutas faltantes.
 
