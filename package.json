@@ -21,7 +21,7 @@
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "docker:app": "docker compose --profile app up -d --build",
-    "prepare": "husky"
+    "prepare": "node scripts/prepare.mjs"
   },
   "lint-staged": {
     "*.{js,jsx,json,md,yml,yaml}": [
