@@ -4,7 +4,7 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 
 ## Estado actual
 
-- **Fase:** Fases 0 a 5 completadas. Siguiente: Fase 6 (frontend production).
+- **Fase:** Fase 6 completada en local. Deploy de Fase 6 y Fase 7 pendientes de accesos y claves de producción.
 - **Repo:** rama `dev` publicada en `origin/dev`; `main` no se tocó todavía.
 - **Backend:** copia adaptada de Duo LAS con `GAME_SERVER=LAN`, migración LAN y branding Duo LAN.
 - **Frontend:** público, auth, onboarding, perfil, match, matches y notificaciones completos en Angular 21. Incluye disponibilidad, invitaciones, Busco 1, ARAM y admin.
@@ -14,8 +14,9 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - **Marca:** Duo LAN, mismo logo y diseño, reemplazando LAS por LAN.
 - **Timezone UI:** `America/Mexico_City`.
 - **Jurisdicción legal:** Argentina.
-- **Deploy:** pendiente. Render free inicialmente, Vercel y Neon.
-- **Última actualización:** 2026-10-30.
+- **Push:** VAPID local configurado; envío real verificado con `demo_mid`.
+- **Deploy:** configuración Vercel lista; Render/Neon/Vercel, dominios y SSL pendientes de accesos.
+- **Última actualización:** 2026-10-31.
 
 ## Decisiones cerradas
 
@@ -161,6 +162,18 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - Smoke visual de admin, ARAM, Busco 1, disponibilidad e invitaciones.
 - Backend y frontend con tests, lint y build verdes.
 - Siguiente: Fase 6 (frontend production).
+
+## Cierre Fase 6 local (2026-10-31)
+
+- Build de producción Angular con `environment.production.ts` apuntando a `https://api.duolan.online/api/v1`.
+- `vercel.json` en raíz del monorepo: build `@duolan/web`, salida `apps/web/dist/web/browser`, rewrite SPA, redirect `www` y headers de seguridad.
+- CSP con API real, hCaptcha, Google Fonts, service worker y `frame-ancestors`; cache diferenciado para `sw.js`, `index.html` y assets.
+- SEO completo: título, descripción, canonical, robots, sitemap, Open Graph y Twitter Cards.
+- Manifest PWA actualizado con iconos, shortcuts, categorías y metadatos LAN.
+- Iconos 192/512 actualizados al logo hexagonal; `og-image.png` de 1200x630 creado.
+- Verificado que no quedan referencias a `duolas.online` ni `Duo LAS` en web.
+- Build, lint y 41 tests de Angular verdes.
+- Pendiente: site key de hCaptcha, deploy en Vercel, dominios y SSL.
 
 ## Leyenda
 
@@ -524,24 +537,24 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 
 **Objetivo:** web Angular deployada y conectada a la API real.
 
-- [ ] Configurar build de producción.
-- [ ] Configurar `API_URL=https://api.duolan.online/api`.
-- [ ] Configurar `HCAPTCHA_SITE_KEY`.
-- [ ] Configurar `vercel.json`.
-- [ ] Rewrite SPA a `index.html`.
-- [ ] CSP con `connect-src https://api.duolan.online`.
-- [ ] Headers de seguridad.
-- [ ] Actualizar `index.html`:
-  - [ ] título.
-  - [ ] descripción.
-  - [ ] canonical.
-  - [ ] OG.
-  - [ ] Twitter Cards.
-- [ ] Actualizar `manifest.json`.
-- [ ] Actualizar iconos.
-- [ ] Crear `og-image.png` de DuoLAN.
-- [ ] Verificar mobile y desktop.
-- [ ] Verificar que no haya referencias a `duolas.online` ni `Duo LAS`.
+- [x] Configurar build de producción.
+- [x] Configurar `API_URL=https://api.duolan.online/api/v1`.
+- [ ] Configurar `HCAPTCHA_SITE_KEY` (pendiente de la site key de producción).
+- [x] Configurar `vercel.json`.
+- [x] Rewrite SPA a `index.html`.
+- [x] CSP con `connect-src https://api.duolan.online`.
+- [x] Headers de seguridad.
+- [x] Actualizar `index.html`:
+  - [x] título.
+  - [x] descripción.
+  - [x] canonical.
+  - [x] OG.
+  - [x] Twitter Cards.
+- [x] Actualizar `manifest.json`.
+- [x] Actualizar iconos 192/512.
+- [x] Crear `og-image.png` de DuoLAN.
+- [x] Verificar mobile y desktop.
+- [x] Verificar que no haya referencias a `duolas.online` ni `Duo LAS`.
 - [ ] Deploy en Vercel.
 - [ ] Configurar `duolan.online` y `www.duolan.online`.
 - [ ] Verificar SSL.
