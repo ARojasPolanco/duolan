@@ -175,6 +175,17 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - Build, lint y 41 tests de Angular verdes.
 - Pendiente: site key de hCaptcha, deploy en Vercel, dominios y SSL.
 
+## Auditoría pre-producción (2026-10-31)
+
+- Suite completa: 133 tests de API y 43 de Angular; lint, build de API y build web de producción verdes.
+- Feed local y bundle de producción sanos; API `/health` y `/api/v1` responden correctamente.
+- CSP de Vercel validada contra el bundle real: se desactivó `inlineCritical` para evitar `onload` inline y se corrigió `Permissions-Policy`.
+- Corregidos formularios que disparaban submit nativo y recargaban la página: feedback, reportar, recuperar contraseña y solicitud de username.
+- Sin secretos versionados, sin referencias a `duolas.online`/Duo LAS en el bundle y sin source maps en producción.
+- `npm audit --omit=dev`: 2 moderadas conocidas de `uuid` vía Sequelize, sin ruta explotable en el código actual.
+- Blockers: site key de hCaptcha en la web, secretos y servicios de producción, rama `main`, deploy Vercel/Render/Neon, DNS y SSL.
+- Riesgos aceptados: SSE y rate limits en memoria requieren una sola instancia; Render free puede dormir y cortar SSE.
+
 ## Leyenda
 
 - `[ ]` pendiente

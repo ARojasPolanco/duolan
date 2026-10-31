@@ -12,10 +12,10 @@ Plan de pruebas del MVP. Sin tests E2E automatizados: el smoke manual es obligat
 
 ### Estado actual
 
-- F0 a F1 cerrados técnicamente con **133 tests pasando** (126 base + 7 de configuración LAN).
+- Fases 0 a 6 cerradas técnicamente con **133 tests de API y 43 de Angular pasando**.
 - Cubierto: health, envelope 404, redacción de errores, registro, login, suspensión, verificación de email, resend, forgot/reset, cambio de contraseña, eliminación y recuperación de cuenta, perfiles, país de residencia, Riot ID, roles, rango Solo/Dúo, rango Flex, Comodín, completitud, middlewares, candidatos, likes, match mutuo, contacto, archivo/reactivación, bloqueos, notificaciones, disponibilidad con TTL, invitaciones, Busco 1, postulaciones, feedback doble ciego, reputación, reportes, auto-bloqueo, advertencias, suspensiones, tickets SSE, bus de eventos, suscripciones push, métricas, panel admin de usuarios, autorización admin de KPIs, ARAM (grupo, disponibilidad individual, postulación y conexión) y cambio de username asistido con reservas y recordatorio de likes pendientes y WhatsApp opcional.
-- Smoke técnico: flujo API contra PostgreSQL y rutas web respondiendo 200.
-- Pendiente: smoke visual interactivo en navegador antes del release.
+- Smoke técnico: flujo API contra PostgreSQL, build de producción y rutas web principales a 390 px y 1440 px.
+- Pendiente: smoke completo contra los dominios reales después del deploy.
 
 - `NODE_ENV=test`.
 - Rate limits altos en test (1.000) para no interferir; los valores productivos se validan en smoke.
@@ -110,7 +110,7 @@ Cuando exista CI, los mismos comandos deben pasar sin servicios externos: Resend
 - Contraseña de 10 a 128 caracteres.
 - Tokens de verificación y reset guardados hasheados.
 - Idiomas 1-3.
-- País `AR`, `CL`, `BO`, `PY` o `UY`; `PE` rechazado; vacío permitido.
+- Países LAN: `MX`, `GT`, `SV`, `HN`, `NI`, `CR`, `PA`, `DO`, `PR`, `CO`, `VE`, `EC` y `PE`; vacío permitido.
 - Horarios 1-28.
 - Bio y notas con longitud máxima.
 - Feedback negativo sin tag.
@@ -168,11 +168,11 @@ Cuando exista CI, los mismos comandos deben pasar sin servicios externos: Resend
 
 ### ARAM
 
-- [ ] Publicar un grupo de 2-4 jugadores y confirmar lugares disponibles.
-- [ ] Publicar disponibilidad individual y confirmar que solo permite 1 lugar.
-- [ ] Postularse desde otra cuenta y aceptar desde la publicación.
-- [ ] Confirmar conexión ARAM en Matches y notificación/push.
-- [ ] Confirmar que se descuenta un lugar y el post se llena al completar 5.
+- [x] Publicar un grupo de 2-4 jugadores y confirmar lugares disponibles.
+- [x] Publicar disponibilidad individual y confirmar que solo permite 1 lugar.
+- [x] Postularse desde otra cuenta y aceptar desde la publicación.
+- [x] Confirmar conexión ARAM en Matches y notificación/push.
+- [x] Confirmar que se descuenta un lugar y el post se llena al completar 5.
 
 ### Disponible ya
 

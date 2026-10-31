@@ -7,33 +7,27 @@ Los ejemplos listos para copiar están en:
 - `apps/api/.env.production.example`
 - `apps/web/.env.example`
 
-## 1. Faltantes actuales
+## 1. Pendientes para producción
 
-En el `.env` de desarrollo local hoy faltan o están vacías:
+El VAPID local ya está configurado y el push fue validado, pero producción necesita claves propias. Faltan o deben reemplazarse:
 
-- [ ] `HCAPTCHA_SECRET`
-- [ ] `RESEND_API_KEY`
-- [ ] `OWNER_EMAIL`
-- [ ] `VAPID_PUBLIC_KEY`
-- [ ] `VAPID_PRIVATE_KEY`
-- [ ] `ADMIN_EMAIL` (solo para el seed de admin)
-- [ ] `ADMIN_PASSWORD` (solo para el seed de admin)
-- [ ] `API_URL` en la web
-- [ ] `HCAPTCHA_SITE_KEY` en la web
-- [ ] Dominio real de web y API
+- [ ] `HCAPTCHA_SECRET` de la API
+- [ ] `HCAPTCHA_SITE_KEY` en `environment.production.ts`
+- [ ] `RESEND_API_KEY` y `OWNER_EMAIL`
+- [ ] VAPID nuevo para producción
+- [ ] `ADMIN_EMAIL` y `ADMIN_PASSWORD` (solo para el seed de admin)
+- [ ] `DB_URI` de Neon con SSL
+- [ ] `NODE_ENV=production`
+- [ ] `CORS_ORIGIN=https://duolan.online,https://www.duolan.online`
+- [ ] `APP_URL=https://duolan.online`
+- [ ] `SECRET_JWT_SEED` nuevo y aleatorio
+- [ ] Rama `main` para el release
+- [ ] Deploy, DNS, SSL y smoke contra dominios reales
 - [ ] URLs públicas de términos, privacidad y aviso de Riot
 - [ ] Producto registrado en el Developer Portal de Riot
 - [ ] Boilerplate legal exacto de Riot publicado
 
-Además, antes de producción hay que reemplazar los valores de desarrollo:
-
-- [ ] `NODE_ENV` a `production`
-- [ ] `DB_URI` por la URL de Neon con SSL
-- [ ] `CORS_ORIGIN` por el dominio real de la web
-- [ ] `APP_URL` por el dominio real de la web
-- [ ] `SECRET_JWT_SEED` por un secreto nuevo y aleatorio
-- [ ] `API_URL` por la URL real de la API, incluyendo `/api/v1`
-- [ ] `TEST_DB_URI` no se configura en producción
+`TEST_DB_URI` no se configura en producción.
 
 ## 2. Variables de la API
 
@@ -69,18 +63,18 @@ Además, antes de producción hay que reemplazar los valores de desarrollo:
 
 ## 3. Variables de la web
 
-| Variable            | ¿Obligatoria? | Ejemplo                            | Dónde se configura | Notas                                |
-| ------------------- | ------------- | ---------------------------------- | ------------------ | ------------------------------------ |
-| `API_URL`           | Sí            | `https://api.duolan.online/api/v1` | Vercel             | **Incluye `/api/v1`**; es build-time |
-| `HCAPTCHA_SITE_KEY` | Sí            | `REPLACE_WITH_SITE_KEY`            | Vercel             | Es pública; el secret va en la API   |
+| Variable            | ¿Obligatoria? | Ejemplo                            | Dónde se configura                           | Notas                                |
+| ------------------- | ------------- | ---------------------------------- | -------------------------------------------- | ------------------------------------ |
+| `API_URL`           | Sí            | `https://api.duolan.online/api/v1` | `src/environments/environment.production.ts` | **Incluye `/api/v1`**; es build-time |
+| `HCAPTCHA_SITE_KEY` | Sí            | `REPLACE_WITH_SITE_KEY`            | `src/environments/environment.production.ts` | Es pública; el secret va en la API   |
 
-`environment.apiUrl` y `environment.hcaptchaSiteKey` se compilan en el bundle. Después de cambiarlas hay que redeployar la web.
+Angular no lee variables de Vercel en runtime. `environment.apiUrl` y `environment.hcaptchaSiteKey` se editan en `apps/web/src/environments/environment.production.ts`, se commitean y se compilan en el bundle. Después de cambiarlas hay que redeployar la web.
 
 ## 4. Servicios externos y credenciales
 
 | Servicio       | Qué se necesita                             | Dónde se usa                        |
 | -------------- | ------------------------------------------- | ----------------------------------- |
-| GitHub         | Remoto nuevo de DuoLAN                      | Sin conectar todavía                |
+| GitHub         | Remoto nuevo de DuoLAN                      | `origin/dev` conectado              |
 | Neon           | Connection string de PostgreSQL con SSL     | `DB_URI`                            |
 | Render         | Host de la API y variables de entorno       | API                                 |
 | Vercel         | Proyecto de la web y environment de Angular | Web                                 |
@@ -144,9 +138,9 @@ Al pasar a producción: verificar el dominio en Resend, cambiar `OWNER_EMAIL` a 
 - [ ] Verificar `GET /health` con `database: connected`.
 - [ ] Correr `npm run seed:admin` con `ADMIN_EMAIL` y `ADMIN_PASSWORD`.
 - [ ] Quitar `ADMIN_PASSWORD` del entorno después del seed.
-- [ ] Cargar `API_URL` y `HCAPTCHA_SITE_KEY` en Vercel.
+- [ ] Configurar `apiUrl` y `hcaptchaSiteKey` en `apps/web/src/environments/environment.production.ts`.
 - [ ] Redeployar la web.
-- [ ] Confirmar que `API_URL` termina en `/api/v1`.
+- [ ] Confirmar que `apiUrl` termina en `/api/v1`.
 - [ ] Probar registro, verificación de email, login, onboarding y perfil público.
 - [ ] Probar forgot/reset y confirmar que el email llega.
 - [ ] Confirmar que hCaptcha aparece en producción.
@@ -180,7 +174,7 @@ Al pasar a producción: verificar el dominio en Resend, cambiar `OWNER_EMAIL` a 
 - Login tiene límite por credencial (10 fallos/15 min) además del límite por IP; un usuario inexistente compara un hash dummy para no filtrar timing.
 - Verificación de email y reset guardan solo el SHA-256 del token.
 - La web en Vercel aplica CSP, HSTS, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy`, `X-Content-Type-Options` y CORP.
-- El CSP permite `connect-src https:` para no hardcodear el dominio de la API. Después del deploy, conviene restringirlo al dominio real en `apps/web/vercel.json`.
+- El CSP restringe `connect-src` a `https://api.duolan.online` y hCaptcha en `vercel.json`. Si cambia el dominio de la API, hay que actualizar la política.
 - `npm audit --omit=dev` queda con 2 moderadas de `uuid` vía Sequelize. La ruta vulnerable (buffers en v3/v5/v6) no la usa Sequelize; se revisa al actualizar Sequelize 7.
 - `SECRET_JWT_SEED`, `DB_URI`, `RESEND_API_KEY`, `HCAPTCHA_SECRET`, `VAPID_PRIVATE_KEY`, `RIOT_API_KEY` y `ADMIN_PASSWORD` son secretos.
 - `HCAPTCHA_SITE_KEY` y `VAPID_PUBLIC_KEY` son públicos.

@@ -6,12 +6,13 @@ Duo LAN es un producto separado de Duo LAS. No comparte base de datos, secretos,
 
 ## Estado
 
-- **Fase actual:** Fases 0, 1, 2, 3 y 4 implementadas. Siguiente: Fase 5 (paridad completa).
+- **Fase actual:** Fases 0 a 6 completadas en local. Siguiente: deploy de la web y Fase 7 (infra, servicios y DNS).
 - **Backend:** copia adaptada de Duo LAS con `GAME_SERVER=LAN`, migración `019_region_lan`, países LAN, timezone `America/Mexico_City` y branding Duo LAN.
-- **Frontend:** Angular 21 con público, auth, onboarding, perfil, match, matches, notificaciones, SSE/push y selector ES/EN. Faltan disponibilidad, invitaciones, Busco 1, ARAM y admin.
+- **Frontend:** Angular 21 con público, auth, onboarding, perfil, match, matches, disponibilidad, invitaciones, Busco 1, ARAM, notificaciones, SSE/push y admin.
 - **Base de datos:** PostgreSQL 16 local o Neon. Sin datos migrados desde Duo LAS.
-- **Deploy:** pendiente. Render free para la API, Vercel para la web y Neon para la DB.
-- **Ramas:** `dev` para desarrollo y `main` para producción. No se hizo commit inicial todavía.
+- **Tests:** 133 de API y 43 de Angular; lint, build y smoke local verdes.
+- **Deploy:** configuración de producción preparada. Pendientes claves externas, Render, Neon, Vercel, DNS y SSL.
+- **Ramas:** `dev` publicada en `origin/dev`; `main` se crea para el release final.
 
 La fuente de verdad del plan es `task2.md`. Las reglas operativas están en `agent2.md`.
 
