@@ -109,30 +109,33 @@ const PREVIEW_PLAYERS: PreviewPlayer[] = [
   ],
   template: `
     <main class="min-h-screen bg-bg text-text">
-      <header class="mx-auto flex max-w-6xl items-center justify-between px-5 py-5">
-        <a routerLink="/" class="flex items-center gap-2 text-lg font-extrabold tracking-tight">
+      <header class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-5 sm:px-5">
+        <a
+          routerLink="/"
+          class="flex min-w-0 items-center gap-1.5 text-lg font-extrabold tracking-tight sm:gap-2"
+        >
           Duo<span class="text-accent">LAN</span>
-          <app-beta-badge />
+          <app-beta-badge class="hidden sm:inline-flex" />
         </a>
-        <div class="flex items-center gap-2 text-sm font-semibold">
+        <div class="flex shrink-0 items-center gap-1.5 text-sm font-semibold sm:gap-2">
           <app-language-toggle />
           @if (isAuthenticated()) {
             <a
               routerLink="/inicio"
-              class="inline-flex min-h-11 items-center rounded-lg bg-accent px-3 text-[11px] font-bold text-bg sm:px-4 sm:text-xs"
+              class="inline-flex min-h-11 items-center rounded-lg bg-accent px-2.5 text-[11px] font-bold text-bg sm:px-4 sm:text-xs"
             >
               {{ i18n.t('common.goToApp') }}
             </a>
           } @else {
             <a
               routerLink="/login"
-              class="inline-flex min-h-11 items-center px-2 text-xs text-muted sm:text-sm"
+              class="inline-flex min-h-11 items-center px-1.5 text-[11px] text-muted sm:px-2 sm:text-sm"
             >
               {{ i18n.t('common.login') }}
             </a>
             <a
               routerLink="/register"
-              class="inline-flex min-h-11 items-center rounded-lg bg-accent px-3 text-[11px] font-bold text-bg sm:px-4 sm:text-xs"
+              class="inline-flex min-h-11 items-center rounded-lg bg-accent px-2.5 text-[11px] font-bold text-bg sm:px-4 sm:text-xs"
             >
               {{ i18n.t('common.register') }}
             </a>

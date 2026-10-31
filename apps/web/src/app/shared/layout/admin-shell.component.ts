@@ -32,15 +32,17 @@ const ADMIN_LINKS: AdminLink[] = [
   template: `
     <div class="min-h-screen bg-bg text-text">
       <header class="sticky top-0 z-40 border-b border-border/70 bg-bg/90 backdrop-blur-xl">
-        <div class="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4 sm:h-16 sm:px-6">
+        <div
+          class="mx-auto flex h-14 max-w-6xl min-w-0 items-center gap-2 px-4 sm:h-16 sm:gap-3 sm:px-6"
+        >
           <a
             routerLink="/admin"
-            class="flex min-h-11 shrink-0 items-center gap-2 text-xl font-extrabold tracking-tight"
+            class="flex min-h-11 shrink-0 items-center gap-2 text-lg font-extrabold tracking-tight sm:text-xl"
           >
             <span>Duo<span class="text-accent">LAN</span></span>
             <app-beta-badge />
             <span
-              class="rounded-full border border-accent/40 bg-accent/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent"
+              class="hidden rounded-full border border-accent/40 bg-accent/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent sm:inline"
             >
               {{ i18n.t('admin.eyebrow') }}
             </span>
@@ -61,7 +63,7 @@ const ADMIN_LINKS: AdminLink[] = [
             }
           </nav>
 
-          <div class="ml-auto flex items-center gap-2">
+          <div class="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
             <app-language-toggle />
             <span class="hidden max-w-40 truncate text-xs font-semibold text-muted sm:block">
               {{ user()?.username }}
@@ -110,7 +112,7 @@ const ADMIN_LINKS: AdminLink[] = [
         </nav>
       </header>
 
-      <main class="mx-auto max-w-6xl px-4 pb-12 pt-6 sm:px-6">
+      <main class="mx-auto w-full min-w-0 max-w-6xl px-4 pb-12 pt-6 sm:px-6">
         <router-outlet />
         <footer class="mt-10 border-t border-border pt-4 text-[11px] font-semibold text-muted">
           {{ i18n.t('common.adminPanelFooter') }}

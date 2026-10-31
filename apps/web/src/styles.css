@@ -18,16 +18,25 @@
 
 html {
   color-scheme: dark;
+  overflow-x: hidden;
 }
 
 body {
   min-height: 100vh;
   margin: 0;
+  overflow-x: hidden;
   background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+app-root,
+app-card,
+app-player-preview-card {
+  display: block;
+  min-width: 0;
 }
 
 h1,

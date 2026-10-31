@@ -84,7 +84,7 @@ import { ReportDialogComponent } from '../components/report-dialog.component';
           @for (match of matches(); track match.id) {
             <app-card padding="lg">
               <div class="flex items-start justify-between gap-3">
-                <div class="flex items-center gap-3">
+                <div class="flex min-w-0 flex-1 items-center gap-3">
                   <div
                     class="flex h-12 w-12 items-center justify-center rounded-xl bg-surface-2 text-sm font-extrabold text-accent"
                   >
@@ -103,7 +103,7 @@ import { ReportDialogComponent } from '../components/report-dialog.component';
                     </div>
                     <p class="mt-1 flex min-w-0 items-center gap-1.5 text-xs text-muted">
                       <app-rank-icon [tier]="match.other.rankTier" [size]="16" />
-                      <span class="truncate">
+                      <span class="min-w-0">
                         {{ rankLabel(match.other) }} · {{ rolesLabel(match.other) }}
                       </span>
                     </p>
@@ -170,8 +170,13 @@ import { ReportDialogComponent } from '../components/report-dialog.component';
                   {{ i18n.t('matches.createdOn', { date: formatDate(match.createdAt) }) }}
                 </p>
 
-                <div class="flex flex-wrap items-center gap-2">
-                  <app-button variant="secondary" size="sm" (click)="toggleFeedback(match.id)">
+                <div class="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center">
+                  <app-button
+                    variant="secondary"
+                    size="sm"
+                    [fullWidth]="true"
+                    (click)="toggleFeedback(match.id)"
+                  >
                     {{
                       match.feedback.mine === 'submitted'
                         ? i18n.t('matches.viewFeedback')
@@ -181,6 +186,7 @@ import { ReportDialogComponent } from '../components/report-dialog.component';
                   <app-button
                     variant="secondary"
                     size="sm"
+                    [fullWidth]="true"
                     [disabled]="actionId() === match.id"
                     (click)="archive(match)"
                   >
@@ -189,6 +195,7 @@ import { ReportDialogComponent } from '../components/report-dialog.component';
                   <app-button
                     variant="danger"
                     size="sm"
+                    [fullWidth]="true"
                     [disabled]="actionId() === match.id"
                     (click)="openReport(match.other)"
                   >
@@ -197,6 +204,7 @@ import { ReportDialogComponent } from '../components/report-dialog.component';
                   <app-button
                     variant="danger"
                     size="sm"
+                    [fullWidth]="true"
                     [disabled]="actionId() === match.id"
                     (click)="block(match)"
                   >

@@ -213,13 +213,18 @@ const POST_STATUS_META: Record<PostStatus, { key: TranslationKey; className: str
             }
           </div>
 
-          <app-button
-            [variant]="formOpen() ? 'secondary' : 'primary'"
-            [disabled]="creating()"
+          <button
+            type="button"
             (click)="toggleForm()"
+            [disabled]="creating()"
+            [class]="
+              formOpen()
+                ? 'min-h-11 w-full rounded-xl border border-border px-4 text-xs font-semibold text-muted transition hover:border-accent/50 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto'
+                : 'min-h-11 w-full rounded-xl border border-accent/50 bg-accent/10 px-4 text-xs font-bold text-accent transition hover:bg-accent/15 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto'
+            "
           >
             {{ formOpen() ? i18n.t('posts.closeForm') : i18n.t('posts.newPost') }}
-          </app-button>
+          </button>
         </div>
 
         @if (formOpen()) {
@@ -315,11 +320,13 @@ const POST_STATUS_META: Record<PostStatus, { key: TranslationKey; className: str
 
         @if (tab() === 'explore') {
           <section>
-            <div class="mb-4 flex flex-wrap items-center justify-end gap-2">
+            <div
+              class="mb-4 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-end"
+            >
               <select
                 [value]="filterQueue()"
                 (change)="setFilterQueue($event)"
-                class="min-h-11 rounded-lg border border-border bg-bg px-3 py-2 text-xs text-text"
+                class="min-h-11 w-full rounded-lg border border-border bg-bg px-3 py-2 text-xs text-text sm:w-auto"
               >
                 <option value="">{{ i18n.t('posts.allQueues') }}</option>
                 @for (queue of queueOptions; track queue) {
@@ -329,16 +336,24 @@ const POST_STATUS_META: Record<PostStatus, { key: TranslationKey; className: str
               <select
                 [value]="filterRole()"
                 (change)="setFilterRole($event)"
-                class="min-h-11 rounded-lg border border-border bg-bg px-3 py-2 text-xs text-text"
+                class="min-h-11 w-full rounded-lg border border-border bg-bg px-3 py-2 text-xs text-text sm:w-auto"
               >
                 <option value="">{{ i18n.t('posts.allRoles') }}</option>
                 @for (role of roleOptions; track role) {
                   <option [value]="role">{{ i18n.t(ROLE_LABEL_KEYS[role]) }}</option>
                 }
               </select>
-              <app-button variant="secondary" size="sm" [loading]="loading()" (click)="loadPosts()">
-                {{ i18n.t('posts.reload') }}
-              </app-button>
+              <div class="col-span-2 sm:col-auto">
+                <app-button
+                  variant="secondary"
+                  size="sm"
+                  [loading]="loading()"
+                  [fullWidth]="true"
+                  (click)="loadPosts()"
+                >
+                  {{ i18n.t('posts.reload') }}
+                </app-button>
+              </div>
             </div>
 
             @if (loading()) {

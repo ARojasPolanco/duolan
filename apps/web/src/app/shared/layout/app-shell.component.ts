@@ -243,7 +243,7 @@ const PRIMARY_LINKS: ShellLink[] = [
         </div>
       </header>
 
-      <main class="mx-auto max-w-6xl px-4 pb-28 pt-6 sm:px-6 lg:pb-12">
+      <main class="mx-auto w-full min-w-0 max-w-6xl px-4 pb-28 pt-6 sm:px-6 lg:pb-12">
         <router-outlet />
 
         <footer class="mt-10 border-t border-border pt-4">
