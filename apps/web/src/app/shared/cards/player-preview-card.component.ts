@@ -1,15 +1,18 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
+import type { Queue, RankDivision, RankTier, Role } from '../../core/api/models/enums';
 import type { PublicProfile } from '../../core/api/models/profile.model';
 import {
-  LANGUAGE_LABELS,
-  STYLE_LABELS,
-  formatRank,
-  formatRoles,
-  initialsOf,
-} from '../../core/utils/labels';
-import { ButtonComponent } from '../ui/button.component';
+  DIVISION_LABEL_KEYS,
+  LANGUAGE_LABEL_KEYS,
+  RANK_LABEL_KEYS,
+  ROLE_LABEL_KEYS,
+  STYLE_LABEL_KEYS,
+} from '../../core/i18n/labels';
+import { I18nService } from '../../core/i18n/i18n.service';
+import { initialsOf } from '../../core/utils/labels';
 import { CountryBadgeComponent } from '../icons/country-badge.component';
 import { RankIconComponent } from '../icons/rank-icon.component';
+import { ButtonComponent } from '../ui/button.component';
 
 @Component({
   selector: 'app-player-preview-card',
@@ -26,9 +29,9 @@ import { RankIconComponent } from '../icons/rank-icon.component';
           </div>
           <div class="min-w-0">
             <h3 class="truncate font-bold">&#64;{{ player().username }}</h3>
-            <p class="mt-0.5 text-[10px] text-muted">Usuario de Duo LAN, no Riot ID</p>
+            <p class="mt-0.5 text-[10px] text-muted">{{ i18n.t('match.usernameHint') }}</p>
             <p class="mt-1 flex min-w-0 items-center gap-1.5 text-xs text-muted">
-              <app-rank-icon [tier]="player().rankTier" [size]="16" />
+              <app-rank-icon [tier]="rankTier()" [size]="16" />
               <span class="truncate">{{ rank() }} · {{ roles() }}</span>
             </p>
             @if (player().country) {
@@ -41,16 +44,20 @@ import { RankIconComponent } from '../icons/rank-icon.component';
 
         @if (score() !== null) {
           <div class="shrink-0 rounded-full bg-accent/15 px-3 py-1 text-xs font-bold text-accent">
-            {{ score() }} pts
+            {{ i18n.t('match.score', { score: score() ?? 0 }) }}
           </div>
         }
       </div>
 
       <div class="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 text-[11px] text-muted">
         <span class="truncate">{{ style() }}</span>
-        <span class="truncate">{{ player().hasMic ? 'Con mic' : 'Sin mic' }}</span>
+        <span class="truncate">
+          {{ player().hasMic ? i18n.t('match.withMic') : i18n.t('match.withoutMic') }}
+        </span>
         <span class="truncate">{{ languages() }}</span>
-        <span class="truncate">Reputación {{ player().reputation.label || 'Nuevo' }}</span>
+        <span class="truncate">
+          {{ i18n.t('match.reputation', { label: player().reputation.label || '—' }) }}
+        </span>
       </div>
 
       @if (reasons().length) {
@@ -71,10 +78,15 @@ import { RankIconComponent } from '../icons/rank-icon.component';
       @if (showActions()) {
         <div class="mt-4 flex items-center gap-2">
           <app-button [fullWidth]="true" [disabled]="busy()" (click)="like.emit()">
-            Me interesa
+            {{ i18n.t('match.like') }}
           </app-button>
+          @if (showPass()) {
+            <app-button variant="secondary" size="sm" [disabled]="busy()" (click)="pass.emit()">
+              {{ i18n.t('match.pass') }}
+            </app-button>
+          }
           <app-button variant="danger" size="sm" [disabled]="busy()" (click)="block.emit()">
-            Bloquear
+            {{ i18n.t('match.block') }}
           </app-button>
         </div>
       }
@@ -82,22 +94,46 @@ import { RankIconComponent } from '../icons/rank-icon.component';
   `,
 })
 export class PlayerPreviewCardComponent {
+  protected readonly i18n = inject(I18nService);
+
   readonly player = input.required<PublicProfile>();
+  readonly queue = input<Queue | null>(null);
   readonly score = input<number | null>(null);
   readonly reasons = input<string[]>([]);
   readonly showActions = input(true);
+  readonly showPass = input(false);
   readonly busy = input(false);
 
   readonly like = output<void>();
+  readonly pass = output<void>();
   readonly block = output<void>();
 
   protected readonly initials = computed(() => initialsOf(this.player().username));
-  protected readonly rank = computed(() => formatRank(this.player()));
-  protected readonly roles = computed(() => formatRoles(this.player()));
-  protected readonly style = computed(() => STYLE_LABELS[this.player().playStyle]);
+  protected readonly rankTier = computed<RankTier>(() => {
+    const player = this.player();
+    return this.queue() === 'flex' && player.flexRankTier ? player.flexRankTier : player.rankTier;
+  });
+  protected readonly rank = computed(() => {
+    const player = this.player();
+    const tier =
+      this.queue() === 'flex' && player.flexRankTier ? player.flexRankTier : player.rankTier;
+    const division: RankDivision | null =
+      this.queue() === 'flex' && player.flexRankTier
+        ? player.flexRankDivision
+        : player.rankDivision;
+    const tierLabel = this.i18n.t(RANK_LABEL_KEYS[tier]);
+    const divisionLabel = division ? this.i18n.t(DIVISION_LABEL_KEYS[division]) : '';
+    return divisionLabel ? `${tierLabel} ${divisionLabel}` : tierLabel;
+  });
+  protected readonly roles = computed(() =>
+    [this.player().primaryRole, this.player().secondaryRole]
+      .map((role) => this.i18n.t(ROLE_LABEL_KEYS[role as Role]))
+      .join(' / '),
+  );
+  protected readonly style = computed(() => this.i18n.t(STYLE_LABEL_KEYS[this.player().playStyle]));
   protected readonly languages = computed(() =>
     this.player()
-      .languages.map((language) => LANGUAGE_LABELS[language] ?? language)
+      .languages.map((language) => this.i18n.t(LANGUAGE_LABEL_KEYS[language]))
       .join(' · '),
   );
 }

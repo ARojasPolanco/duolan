@@ -13,6 +13,7 @@ import { AuthService } from './core/auth/auth.service';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { AppErrorHandler } from './core/errors/app-error-handler';
+import { PushService } from './core/push/push.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,6 +25,7 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
     ),
     provideAppInitializer(() => inject(AuthService).restoreSession()),
+    provideAppInitializer(() => inject(PushService).registerWorker()),
     { provide: ErrorHandler, useClass: AppErrorHandler },
   ],
 };

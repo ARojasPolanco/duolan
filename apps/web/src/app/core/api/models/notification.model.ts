@@ -19,6 +19,17 @@ export interface AppNotification {
   createdAt: string;
 }
 
+export interface NotificationEventPayload {
+  type: 'notification.created' | string;
+  data: {
+    notificationId: string;
+    notificationType: NotificationType;
+    title: string;
+    message: string;
+    url?: string;
+  };
+}
+
 export interface NotificationsResponse {
   status: 'success';
   notifications: AppNotification[];

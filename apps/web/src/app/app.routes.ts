@@ -106,10 +106,8 @@ export const routes: Routes = [
       {
         path: 'match',
         canActivate: [profileCompletedGuard],
-        ...placeholder(
-          'Match',
-          'Candidatos por afinidad, likes y match mutuo llegan en la Fase 4.',
-        ),
+        loadComponent: () =>
+          import('./features/match/pages/match-page').then((module) => module.MatchPage),
         title: 'Match - Duo LAN',
       },
       {
@@ -121,7 +119,8 @@ export const routes: Routes = [
       {
         path: 'matches',
         canActivate: [profileCompletedGuard],
-        ...placeholder('Matches', 'Las conexiones y el contacto revelado llegan en la Fase 4.'),
+        loadComponent: () =>
+          import('./features/matches/pages/matches-page').then((module) => module.MatchesPage),
         title: 'Matches - Duo LAN',
       },
       {
@@ -144,7 +143,10 @@ export const routes: Routes = [
       },
       {
         path: 'notificaciones',
-        ...placeholder('Notificaciones', 'El centro de notificaciones llega en la Fase 4.'),
+        loadComponent: () =>
+          import('./features/notifications/pages/notifications-page').then(
+            (module) => module.NotificationsPage,
+          ),
         title: 'Notificaciones - Duo LAN',
       },
       {

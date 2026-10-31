@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   HostListener,
+  OnDestroy,
   computed,
   inject,
   signal,
@@ -10,6 +11,8 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { AuthService } from '../../core/auth/auth.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import type { TranslationKey } from '../../core/i18n/translations';
+import { MatchingStore } from '../../core/matching/matching.store';
+import { NotificationsStore } from '../../core/notifications/notifications.store';
 import { initialsOf } from '../../core/utils/labels';
 import { BetaBadgeComponent } from '../icons/beta-badge.component';
 import { RiotDisclaimerComponent } from '../legal/riot-disclaimer.component';
@@ -60,9 +63,16 @@ const PRIMARY_LINKS: ShellLink[] = [
               <a
                 [routerLink]="link.path"
                 routerLinkActive="bg-accent/15 text-accent"
-                class="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition hover:bg-surface-2 hover:text-text"
+                class="relative rounded-lg px-3 py-2 text-sm font-semibold text-muted transition hover:bg-surface-2 hover:text-text"
               >
                 {{ i18n.t(link.labelKey) }}
+                @if (link.path === '/match' && matching.candidateCount()) {
+                  <span
+                    class="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[9px] font-bold text-bg"
+                  >
+                    {{ candidateBadge() }}
+                  </span>
+                }
               </a>
             }
             <a
@@ -79,7 +89,10 @@ const PRIMARY_LINKS: ShellLink[] = [
             <a
               routerLink="/notificaciones"
               class="relative flex h-11 w-11 items-center justify-center rounded-xl border border-border text-muted transition hover:border-accent/50 hover:text-text"
-              [attr.aria-label]="i18n.t('common.notifications')"
+              [attr.aria-label]="
+                i18n.t('common.notifications') +
+                (notifications.unreadCount() ? ': ' + notifications.unreadCount() : '')
+              "
             >
               <svg
                 width="18"
@@ -93,6 +106,13 @@ const PRIMARY_LINKS: ShellLink[] = [
                 <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
                 <path d="M10 21h4" />
               </svg>
+              @if (notifications.unreadCount()) {
+                <span
+                  class="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[9px] font-bold text-bg"
+                >
+                  {{ unreadBadge() }}
+                </span>
+              }
             </a>
 
             <div class="relative">
@@ -216,9 +236,16 @@ const PRIMARY_LINKS: ShellLink[] = [
             <a
               [routerLink]="link.path"
               routerLinkActive="text-accent"
-              class="flex min-h-14 flex-1 flex-col items-center justify-center px-1 text-[9px] font-semibold text-muted transition"
+              class="relative flex min-h-14 flex-1 flex-col items-center justify-center px-1 text-[9px] font-semibold text-muted transition"
             >
               {{ i18n.t(link.labelKey) }}
+              @if (link.path === '/match' && matching.candidateCount()) {
+                <span
+                  class="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[9px] font-bold text-bg"
+                >
+                  {{ candidateBadge() }}
+                </span>
+              }
             </a>
           }
         </div>
@@ -226,15 +253,33 @@ const PRIMARY_LINKS: ShellLink[] = [
     </div>
   `,
 })
-export class AppShellComponent {
+export class AppShellComponent implements OnDestroy {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  protected readonly matching = inject(MatchingStore);
+  protected readonly notifications = inject(NotificationsStore);
 
   protected readonly i18n = inject(I18nService);
   protected readonly primaryLinks = PRIMARY_LINKS;
   protected readonly user = this.auth.user;
   protected readonly menuOpen = signal(false);
   protected readonly initials = computed(() => initialsOf(this.user()?.username));
+  protected readonly candidateBadge = computed(() =>
+    this.matching.candidateCount() > 99 ? '99+' : String(this.matching.candidateCount()),
+  );
+  protected readonly unreadBadge = computed(() =>
+    this.notifications.unreadCount() > 9 ? '9+' : String(this.notifications.unreadCount()),
+  );
+
+  constructor() {
+    this.matching.start();
+    this.notifications.start();
+  }
+
+  ngOnDestroy(): void {
+    this.matching.stop();
+    this.notifications.stop();
+  }
 
   @HostListener('document:keydown.escape')
   protected closeMenu(): void {

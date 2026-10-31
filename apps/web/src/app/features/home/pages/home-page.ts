@@ -1,5 +1,16 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  OnInit,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
+import type { MatchReminder } from '../../../core/api/models/matching.model';
+import { MatchingService } from '../../../core/api/matching.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ButtonComponent } from '../../../shared/ui/button.component';
@@ -30,6 +41,20 @@ import { EmailVerificationBannerComponent } from '../../../shared/ui/email-verif
           {{ i18n.t('common.myProfile') }}
         </app-button>
       </header>
+
+      @if (reminder()?.show) {
+        <app-card>
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h2 class="font-bold">{{ i18n.t('home.reminderTitle') }}</h2>
+              <p class="mt-1 text-sm text-muted">
+                {{ i18n.t('home.reminderBody', { count: reminder()?.pendingIncoming ?? 0 }) }}
+              </p>
+            </div>
+            <app-button routerLink="/match">{{ i18n.t('home.reminderCta') }}</app-button>
+          </div>
+        </app-card>
+      }
 
       @if (!profileCompleted()) {
         <app-card>
@@ -91,11 +116,27 @@ import { EmailVerificationBannerComponent } from '../../../shared/ui/email-verif
     </div>
   `,
 })
-export class HomePage {
+export class HomePage implements OnInit {
   private readonly auth = inject(AuthService);
+  private readonly matching = inject(MatchingService);
+  private readonly destroyRef = inject(DestroyRef);
   protected readonly i18n = inject(I18nService);
+  protected readonly reminder = signal<MatchReminder | null>(null);
 
   protected readonly user = this.auth.user;
   protected readonly profileCompleted = computed(() => this.auth.profileCompleted());
   protected readonly isAdmin = computed(() => this.auth.isAdmin());
+
+  ngOnInit(): void {
+    const user = this.auth.user();
+    if (!user?.emailVerified || !user.profileCompleted || user.role === 'admin') return;
+
+    this.matching
+      .getReminder()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => this.reminder.set(response.reminder),
+        error: () => this.reminder.set(null),
+      });
+  }
 }

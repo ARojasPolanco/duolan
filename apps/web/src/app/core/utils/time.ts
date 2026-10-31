@@ -58,29 +58,29 @@ export const formatCountryOffset = (country: Country | null): string => {
   return `${hours > 0 ? '+' : '−'}${formatted} h`;
 };
 
-export const formatDateTime = (value: string | Date): string =>
-  new Intl.DateTimeFormat('es-MX', {
+export const formatDateTime = (value: string | Date, locale = 'es-MX'): string =>
+  new Intl.DateTimeFormat(locale, {
     dateStyle: 'medium',
     timeStyle: 'short',
     timeZone: TIMEZONE,
   }).format(new Date(value));
 
-export const formatDate = (value: string | Date): string =>
-  new Intl.DateTimeFormat('es-MX', {
+export const formatDate = (value: string | Date, locale = 'es-MX'): string =>
+  new Intl.DateTimeFormat(locale, {
     dateStyle: 'medium',
     timeZone: TIMEZONE,
   }).format(new Date(value));
 
-export const formatTime = (value: string | Date): string =>
-  new Intl.DateTimeFormat('es-MX', {
+export const formatTime = (value: string | Date, locale = 'es-MX'): string =>
+  new Intl.DateTimeFormat(locale, {
     timeStyle: 'short',
     timeZone: TIMEZONE,
   }).format(new Date(value));
 
-export const formatRelativeTime = (value: string | Date): string => {
+export const formatRelativeTime = (value: string | Date, locale = 'es-MX'): string => {
   const target = new Date(value).getTime();
   const diffSeconds = Math.round((target - Date.now()) / 1000);
-  const formatter = new Intl.RelativeTimeFormat('es-MX', { numeric: 'auto' });
+  const formatter = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
 
   if (Math.abs(diffSeconds) < 60) return formatter.format(diffSeconds, 'second');
 

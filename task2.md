@@ -4,10 +4,10 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 
 ## Estado actual
 
-- **Fase:** Fases 0, 1, 2 y 3 completadas. Siguiente: Fase 4 (match y notificaciones).
+- **Fase:** Fases 0, 1, 2, 3 y 4 completadas. Siguiente: Fase 5 (paridad completa).
 - **Repo:** rama `dev` publicada en `origin/dev`; `main` no se tocó todavía.
 - **Backend:** copia adaptada de Duo LAS con `GAME_SERVER=LAN`, migración LAN y branding Duo LAN.
-- **Frontend:** flujo público, auth, onboarding, perfil y legales completos en Angular 21. Faltan match, notificaciones, disponibilidad e invitaciones.
+- **Frontend:** público, auth, onboarding, perfil, match, matches y notificaciones completos en Angular 21. Faltan disponibilidad, invitaciones, Busco 1, ARAM y admin.
 - **Base de datos:** PostgreSQL 16 local para desarrollo y tests. Neon pendiente de deploy.
 - **Dominio:** `duolan.online`, DNS en Hostinger.
 - **API:** `api.duolan.online`.
@@ -77,6 +77,18 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - Tests: 35 de Angular (auth, guards, interceptores, i18n, profile form, registro, login y password toggle).
 - Smoke E2E manual con Chrome headless: registro, onboarding completo, perfil, perfil público, username y legales en inglés.
 - Pendiente de configuración: site key/secret de hCaptcha; mensajes de error del backend siguen en español.
+
+## Avance Fase 4 (2026-10-30)
+
+- `/match` con filtros por cola y rol, candidatos por afinidad y actualización periódica.
+- Like optimista con rollback, like mutuo y listado de likes enviados retirables.
+- `/matches` con contacto revelado, copiar, archivar, reportar, bloquear y feedback doble ciego.
+- `/notificaciones` con no leídas, marcar todas, eliminar y apertura por tipo.
+- SSE con ticket efímero, reconexión, fallback a polling cada 20 s y toasts de eventos.
+- Badge de candidatos y no leídas en el shell; recordatorio de likes pendientes en Inicio.
+- Push con permiso explícito, service worker, PWA y click de push a la ruta correcta.
+- Tests: 37 de Angular (incluye SSE).
+- Smoke real con Chrome headless: match, matches y notificaciones con SSE en vivo sin errores de consola.
 
 ## Leyenda
 
@@ -321,43 +333,43 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 
 ### Inicio y match
 
-- [ ] `/inicio`.
-- [ ] `/match`.
-- [ ] Candidatos por afinidad.
-- [ ] Filtros por cola, rol y rango.
-- [ ] Like y like mutuo.
-- [ ] Optimistic UI con rollback.
-- [ ] Badge de candidatos.
-- [ ] Actualización periódica de candidatos.
-- [ ] Banner de likes pendientes.
-- [ ] Recordatorio de match.
-- [ ] Estado sin candidatos.
+- [x] `/inicio`.
+- [x] `/match`.
+- [x] Candidatos por afinidad.
+- [x] Filtros por cola, rol y rango.
+- [x] Like y like mutuo.
+- [x] Optimistic UI con rollback.
+- [x] Badge de candidatos.
+- [x] Actualización periódica de candidatos.
+- [x] Banner de likes pendientes.
+- [x] Recordatorio de match.
+- [x] Estado sin candidatos.
 
 ### Matches
 
-- [ ] `/matches`.
-- [ ] Contacto revelado solo después de conexión.
-- [ ] Riot ID, Discord y WhatsApp.
-- [ ] Copiar contacto.
-- [ ] Archivar/reactivar.
-- [ ] Feedback doble ciego.
-- [ ] Reputación.
-- [ ] Reportar.
-- [ ] Bloquear.
-- [ ] Auto-bloqueo al reportar.
+- [x] `/matches`.
+- [x] Contacto revelado solo después de conexión.
+- [x] Riot ID, Discord y WhatsApp.
+- [x] Copiar contacto.
+- [x] Archivar/reactivar.
+- [x] Feedback doble ciego.
+- [x] Reputación.
+- [x] Reportar.
+- [x] Bloquear.
+- [x] Auto-bloqueo al reportar.
 
 ### Notificaciones
 
-- [ ] `/notificaciones`.
-- [ ] Lista, no leídas y marcar todas.
-- [ ] Eliminar notificación.
-- [ ] SSE en vivo.
-- [ ] Fallback a polling cada 20 segundos.
-- [ ] Indicador de conexión.
-- [ ] Toasts en eventos.
-- [ ] Push con permiso explícito.
-- [ ] PWA instalable.
-- [ ] Click de push abre la ruta correcta.
+- [x] `/notificaciones`.
+- [x] Lista, no leídas y marcar todas.
+- [x] Eliminar notificación.
+- [x] SSE en vivo.
+- [x] Fallback a polling cada 20 segundos.
+- [x] Indicador de conexión.
+- [x] Toasts en eventos.
+- [x] Push con permiso explícito.
+- [x] PWA instalable.
+- [x] Click de push abre la ruta correcta.
 
 **DoD:** match, matches, feedback, reportes, bloqueos, SSE y push funcionando.
 

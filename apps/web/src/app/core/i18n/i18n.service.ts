@@ -20,6 +20,7 @@ export class I18nService {
 
   readonly language = this._language.asReadonly();
   readonly isEnglish = computed(() => this._language() === 'en');
+  readonly locale = computed(() => (this._language() === 'en' ? 'en-US' : 'es-MX'));
 
   constructor() {
     this.applyDocumentLanguage(this._language());

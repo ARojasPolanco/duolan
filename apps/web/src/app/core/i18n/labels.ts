@@ -1,9 +1,12 @@
 import type {
   Country,
+  FeedbackTag,
   Language,
   PlayStyle,
+  Queue,
   RankDivision,
   RankTier,
+  ReportReason,
   Role,
 } from '../api/models/enums';
 import type { TranslationKey } from './translations';
@@ -64,6 +67,33 @@ export const COUNTRY_LABEL_KEYS: Record<Country, TranslationKey> = {
   VE: 'label.country.VE',
   EC: 'label.country.EC',
   PE: 'label.country.PE',
+};
+
+export const QUEUE_LABEL_KEYS: Record<Queue, TranslationKey> = {
+  solo_duo: 'label.queue.solo_duo',
+  flex: 'label.queue.flex',
+};
+
+export const FEEDBACK_TAG_LABEL_KEYS: Record<FeedbackTag, TranslationKey> = {
+  good_vibes: 'label.feedbackTag.good_vibes',
+  communicative: 'label.feedbackTag.communicative',
+  tryhard: 'label.feedbackTag.tryhard',
+  punctual: 'label.feedbackTag.punctual',
+  good_game: 'label.feedbackTag.good_game',
+  toxicity: 'label.feedbackTag.toxicity',
+  abandonment: 'label.feedbackTag.abandonment',
+  fake_rank: 'label.feedbackTag.fake_rank',
+  no_communication: 'label.feedbackTag.no_communication',
+  other: 'label.feedbackTag.other',
+};
+
+export const REPORT_REASON_LABEL_KEYS: Record<ReportReason, TranslationKey> = {
+  toxicity: 'label.reportReason.toxicity',
+  fake_rank: 'label.reportReason.fake_rank',
+  abandonment: 'label.reportReason.abandonment',
+  spam: 'label.reportReason.spam',
+  underage: 'label.reportReason.underage',
+  other: 'label.reportReason.other',
 };
 
 export const DAY_LABEL_KEYS: Record<ScheduleDay, TranslationKey> = {
