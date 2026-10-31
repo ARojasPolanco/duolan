@@ -1,10 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import type { Observable } from 'rxjs';
 import type {
+  AvailabilityCloseResponse,
   AvailabilityListResponse,
   AvailabilityMineResponse,
   AvailabilityQuery,
-  AvailabilitySession,
+  AvailabilitySessionResponse,
   CreateAvailabilityRequest,
   InviteFromAvailabilityRequest,
 } from './models/availability.model';
@@ -15,12 +16,12 @@ import { ApiService } from './api.service';
 export class AvailabilityService {
   private readonly api = inject(ApiService);
 
-  create(payload: CreateAvailabilityRequest): Observable<AvailabilitySession> {
-    return this.api.post<AvailabilitySession>('/availability', payload);
+  create(payload: CreateAvailabilityRequest): Observable<AvailabilitySessionResponse> {
+    return this.api.post<AvailabilitySessionResponse>('/availability', payload);
   }
 
-  close(): Observable<AvailabilitySession> {
-    return this.api.delete<AvailabilitySession>('/availability');
+  close(): Observable<AvailabilityCloseResponse> {
+    return this.api.delete<AvailabilityCloseResponse>('/availability');
   }
 
   list(query: AvailabilityQuery = {}): Observable<AvailabilityListResponse> {

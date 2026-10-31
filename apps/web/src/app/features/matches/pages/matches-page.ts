@@ -23,6 +23,7 @@ import { CountryBadgeComponent } from '../../../shared/icons/country-badge.compo
 import { RankIconComponent } from '../../../shared/icons/rank-icon.component';
 import { ButtonComponent } from '../../../shared/ui/button.component';
 import { CardComponent } from '../../../shared/ui/card.component';
+import { ConfirmDialogComponent } from '../../../shared/ui/confirm-dialog.component';
 import { EmailVerificationBannerComponent } from '../../../shared/ui/email-verification-banner.component';
 import { SkeletonComponent } from '../../../shared/ui/skeleton.component';
 import { FeedbackPanelComponent } from '../components/feedback-panel.component';
@@ -35,6 +36,7 @@ import { ReportDialogComponent } from '../components/report-dialog.component';
     RouterLink,
     ButtonComponent,
     CardComponent,
+    ConfirmDialogComponent,
     EmailVerificationBannerComponent,
     SkeletonComponent,
     CountryBadgeComponent,
@@ -216,6 +218,29 @@ import { ReportDialogComponent } from '../components/report-dialog.component';
       }
     </div>
 
+    <app-confirm-dialog
+      [open]="pendingArchive() !== null"
+      [title]="i18n.t('matches.archive')"
+      [message]="i18n.t('matches.archiveConfirm', { name: archiveName() })"
+      [confirmLabel]="i18n.t('matches.archive')"
+      [cancelLabel]="i18n.t('report.cancel')"
+      variant="secondary"
+      [busy]="archiveBusy()"
+      (closed)="closeArchiveDialog()"
+      (confirmed)="confirmArchive()"
+    />
+
+    <app-confirm-dialog
+      [open]="pendingBlock() !== null"
+      [title]="i18n.t('matches.block')"
+      [message]="i18n.t('matches.blockConfirm', { name: blockName() })"
+      [confirmLabel]="i18n.t('matches.block')"
+      [cancelLabel]="i18n.t('report.cancel')"
+      [busy]="blockBusy()"
+      (closed)="closeBlockDialog()"
+      (confirmed)="confirmBlock()"
+    />
+
     @if (reportTarget(); as target) {
       <app-report-dialog
         [target]="target"
@@ -239,6 +264,8 @@ export class MatchesPage implements OnInit {
   protected readonly actionId = signal<string | null>(null);
   protected readonly feedbackOpenId = signal<string | null>(null);
   protected readonly reportTarget = signal<PublicProfile | null>(null);
+  protected readonly pendingArchive = signal<Match | null>(null);
+  protected readonly pendingBlock = signal<Match | null>(null);
 
   protected readonly initials = (username: string): string => initialsOf(username);
   protected readonly whatsappUrl = whatsappUrl;
@@ -279,10 +306,36 @@ export class MatchesPage implements OnInit {
     }
   }
 
+  protected archiveName(): string {
+    return this.pendingArchive()?.other.username ?? '';
+  }
+
+  protected archiveBusy(): boolean {
+    const match = this.pendingArchive();
+    return match !== null && this.actionId() === match.id;
+  }
+
+  protected blockName(): string {
+    return this.pendingBlock()?.other.username ?? '';
+  }
+
+  protected blockBusy(): boolean {
+    const match = this.pendingBlock();
+    return match !== null && this.actionId() === match.id;
+  }
+
   protected archive(match: Match): void {
-    if (!window.confirm(this.i18n.t('matches.archiveConfirm', { name: match.other.username }))) {
-      return;
-    }
+    this.pendingArchive.set(match);
+  }
+
+  protected closeArchiveDialog(): void {
+    if (this.actionId()) return;
+    this.pendingArchive.set(null);
+  }
+
+  protected confirmArchive(): void {
+    const match = this.pendingArchive();
+    if (!match) return;
 
     this.actionId.set(match.id);
 
@@ -295,16 +348,28 @@ export class MatchesPage implements OnInit {
       .subscribe({
         next: () => {
           this.matches.update((items) => items.filter((item) => item.id !== match.id));
+          this.pendingArchive.set(null);
           this.toast.success(this.i18n.t('matches.archived'));
         },
-        error: () => this.toast.error(this.i18n.t('matches.archiveError')),
+        error: () => {
+          this.pendingArchive.set(null);
+          this.toast.error(this.i18n.t('matches.archiveError'));
+        },
       });
   }
 
   protected block(match: Match): void {
-    if (!window.confirm(this.i18n.t('matches.blockConfirm', { name: match.other.username }))) {
-      return;
-    }
+    this.pendingBlock.set(match);
+  }
+
+  protected closeBlockDialog(): void {
+    if (this.actionId()) return;
+    this.pendingBlock.set(null);
+  }
+
+  protected confirmBlock(): void {
+    const match = this.pendingBlock();
+    if (!match) return;
 
     this.actionId.set(match.id);
 
@@ -317,9 +382,13 @@ export class MatchesPage implements OnInit {
       .subscribe({
         next: () => {
           this.matches.update((items) => items.filter((item) => item.id !== match.id));
+          this.pendingBlock.set(null);
           this.toast.success(this.i18n.t('matches.blocked'));
         },
-        error: () => this.toast.error(this.i18n.t('matches.blockError')),
+        error: () => {
+          this.pendingBlock.set(null);
+          this.toast.error(this.i18n.t('matches.blockError'));
+        },
       });
   }
 

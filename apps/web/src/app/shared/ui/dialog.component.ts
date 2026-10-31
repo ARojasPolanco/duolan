@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 @Component({
   selector: 'app-dialog',
@@ -10,7 +11,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
           type="button"
           class="absolute inset-0 bg-black/70 backdrop-blur-sm"
           (click)="closed.emit()"
-          aria-label="Cerrar diálogo"
+          [attr.aria-label]="i18n.t('common.close')"
         ></button>
         <div
           class="relative z-10 w-full max-w-md rounded-t-2xl border border-border bg-surface p-5 shadow-2xl sm:rounded-2xl"
@@ -24,9 +25,9 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
               type="button"
               class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition hover:bg-surface-2 hover:text-text"
               (click)="closed.emit()"
-              aria-label="Cerrar"
+              [attr.aria-label]="i18n.t('common.close')"
             >
-              ×
+              &times;
             </button>
           </div>
           <ng-content />
@@ -36,6 +37,8 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
   `,
 })
 export class DialogComponent {
+  protected readonly i18n = inject(I18nService);
+
   readonly open = input(false);
   readonly title = input('');
   readonly closed = output<void>();

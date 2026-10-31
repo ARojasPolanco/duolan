@@ -1,5 +1,6 @@
 import { PHASE3_EN, PHASE3_ES } from './phase3-translations';
 import { PHASE4_EN, PHASE4_ES } from './phase4-translations';
+import { PHASE5_EN, PHASE5_ES } from './phase5-translations';
 
 const BASE_ES = {
   'common.beta': 'Beta',
@@ -116,7 +117,7 @@ const BASE_ES = {
   'placeholder.fallbackDescription': 'Esta funcionalidad todavía no está conectada.',
 } as const;
 
-export const ES = { ...BASE_ES, ...PHASE3_ES, ...PHASE4_ES } as const;
+export const ES = { ...BASE_ES, ...PHASE3_ES, ...PHASE4_ES, ...PHASE5_ES } as const;
 
 export type TranslationKey = keyof typeof ES;
 
@@ -234,4 +235,9 @@ const BASE_EN: Record<keyof typeof BASE_ES, string> = {
   'placeholder.fallbackDescription': "This feature isn't connected yet.",
 };
 
-export const EN: Record<TranslationKey, string> = { ...BASE_EN, ...PHASE3_EN, ...PHASE4_EN };
+export const EN: Record<TranslationKey, string> = {
+  ...BASE_EN,
+  ...PHASE3_EN,
+  ...PHASE4_EN,
+  ...PHASE5_EN,
+};

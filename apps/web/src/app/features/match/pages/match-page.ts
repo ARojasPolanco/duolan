@@ -29,6 +29,7 @@ import { ToastService } from '../../../core/toast/toast.service';
 import { PlayerPreviewCardComponent } from '../../../shared/cards/player-preview-card.component';
 import { ButtonComponent } from '../../../shared/ui/button.component';
 import { CardComponent } from '../../../shared/ui/card.component';
+import { ConfirmDialogComponent } from '../../../shared/ui/confirm-dialog.component';
 import { EmailVerificationBannerComponent } from '../../../shared/ui/email-verification-banner.component';
 import { SkeletonComponent } from '../../../shared/ui/skeleton.component';
 
@@ -39,6 +40,7 @@ import { SkeletonComponent } from '../../../shared/ui/skeleton.component';
     RouterLink,
     ButtonComponent,
     CardComponent,
+    ConfirmDialogComponent,
     EmailVerificationBannerComponent,
     PlayerPreviewCardComponent,
     SkeletonComponent,
@@ -214,6 +216,17 @@ import { SkeletonComponent } from '../../../shared/ui/skeleton.component';
           </app-card>
         }
       }
+
+      <app-confirm-dialog
+        [open]="pendingBlock() !== null"
+        [title]="i18n.t('match.block')"
+        [message]="i18n.t('match.blockConfirm', { name: blockName() })"
+        [confirmLabel]="i18n.t('match.block')"
+        [cancelLabel]="i18n.t('report.cancel')"
+        [busy]="blockBusy()"
+        (closed)="closeBlockDialog()"
+        (confirmed)="confirmBlock()"
+      />
     </div>
   `,
 })
@@ -240,6 +253,7 @@ export class MatchPage implements OnInit {
   protected readonly loading = signal(true);
   protected readonly error = signal('');
   protected readonly actionId = signal<string | null>(null);
+  protected readonly pendingBlock = signal<Candidate | null>(null);
 
   protected readonly canInteract = computed(() =>
     Boolean(this.user()?.emailVerified && this.user()?.profileCompleted),
@@ -359,11 +373,27 @@ export class MatchPage implements OnInit {
       });
   }
 
+  protected blockName(): string {
+    return this.pendingBlock()?.profile.username ?? '';
+  }
+
+  protected blockBusy(): boolean {
+    const candidate = this.pendingBlock();
+    return candidate !== null && this.actionId() === candidate.profile.id;
+  }
+
   protected block(candidate: Candidate): void {
-    const confirmed = window.confirm(
-      this.i18n.t('match.blockConfirm', { name: candidate.profile.username }),
-    );
-    if (!confirmed) return;
+    this.pendingBlock.set(candidate);
+  }
+
+  protected closeBlockDialog(): void {
+    if (this.actionId()) return;
+    this.pendingBlock.set(null);
+  }
+
+  protected confirmBlock(): void {
+    const candidate = this.pendingBlock();
+    if (!candidate) return;
 
     this.actionId.set(candidate.profile.id);
 
@@ -379,10 +409,14 @@ export class MatchPage implements OnInit {
           this.outgoing.update((items) =>
             items.filter((item) => item.target.id !== candidate.profile.id),
           );
+          this.pendingBlock.set(null);
           this.toast.success(this.i18n.t('match.blocked'));
           this.matchingStore.refresh();
         },
-        error: () => this.toast.error(this.i18n.t('match.blockError')),
+        error: () => {
+          this.pendingBlock.set(null);
+          this.toast.error(this.i18n.t('match.blockError'));
+        },
       });
   }
 

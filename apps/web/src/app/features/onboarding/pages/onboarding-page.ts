@@ -40,6 +40,7 @@ import {
 } from '../../../core/profile/profile-form';
 import { ProfilesService } from '../../../core/api/profiles.service';
 import { ToastService } from '../../../core/toast/toast.service';
+import { formatCountryOffset } from '../../../core/utils/time';
 import { RankIconComponent } from '../../../shared/icons/rank-icon.component';
 import { RoleIconComponent } from '../../../shared/icons/role-icon.component';
 import { SchedulePickerComponent } from '../../../shared/profile/schedule-picker.component';
@@ -306,10 +307,20 @@ const STEP_KEYS: TranslationKey[] = [
                         [hint]="i18n.t('onboarding.countryHint')"
                         [options]="countryOptions()"
                       />
+                      @if (selectedCountry()) {
+                        <p class="mt-2 text-xs leading-relaxed text-muted">
+                          {{
+                            i18n.t('onboarding.countryOffset', {
+                              offset: countryOffset(selectedCountry()),
+                            })
+                          }}
+                        </p>
+                      }
                     </div>
 
                     <app-schedule-picker
                       [value]="form.controls.scheduleBlocks.value"
+                      [country]="selectedCountry()"
                       (valueChange)="form.controls.scheduleBlocks.setValue($event)"
                     />
                   </div>
@@ -703,6 +714,15 @@ export class OnboardingPage {
           this.errorKey.set('onboarding.error.save');
         },
       });
+  }
+
+  protected selectedCountry(): Country | null {
+    const country = this.form.controls.country.value;
+    return country ? (country as Country) : null;
+  }
+
+  protected countryOffset(country: Country | null): string {
+    return formatCountryOffset(country);
   }
 
   protected countryLabel(): string {

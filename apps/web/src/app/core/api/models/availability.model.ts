@@ -35,6 +35,16 @@ export interface AvailabilityMineResponse {
   session: AvailabilitySession | null;
 }
 
+export interface AvailabilitySessionResponse {
+  status: 'success';
+  session: AvailabilitySession;
+}
+
+export interface AvailabilityCloseResponse {
+  status: 'success';
+  message: string;
+}
+
 export interface CreateAvailabilityRequest {
   roles: Role[];
   queue: Queue;

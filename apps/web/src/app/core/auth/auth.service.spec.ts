@@ -58,11 +58,11 @@ describe('AuthService', () => {
   it('inicia sesión y persiste token y usuario', async () => {
     api.post.mockReturnValue(of(authResponse));
 
-    const user = await firstValueFrom(
+    const response = await firstValueFrom(
       service.login({ identifier: 'mid@duolan.online', password: 'password123' }),
     );
 
-    expect(user.username).toBe('mid_lan');
+    expect(response.user.username).toBe('mid_lan');
     expect(service.isAuthenticated()).toBe(true);
     expect(service.profileCompleted()).toBe(true);
     expect(localStorage.getItem('duolan_token')).toBe('jwt-token');

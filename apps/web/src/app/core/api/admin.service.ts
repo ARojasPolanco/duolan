@@ -3,7 +3,7 @@ import type { Observable } from 'rxjs';
 import type { ApiSuccess } from './models/common.model';
 import type {
   AdminMetricsSummary,
-  AdminOverview,
+  AdminOverviewResponse,
   AdminReportsQuery,
   AdminReportsResponse,
   AdminUserDetailResponse,
@@ -19,8 +19,8 @@ import { ApiService } from './api.service';
 export class AdminService {
   private readonly api = inject(ApiService);
 
-  getOverview(): Observable<AdminOverview> {
-    return this.api.get<AdminOverview>('/admin/overview');
+  getOverview(): Observable<AdminOverviewResponse> {
+    return this.api.get<AdminOverviewResponse>('/admin/overview');
   }
 
   getUsers(query: AdminUsersQuery = {}): Observable<AdminUsersResponse> {

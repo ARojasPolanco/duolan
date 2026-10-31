@@ -1,7 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { BLOCK_LABEL_KEYS, DAY_LABEL_KEYS } from '../../core/i18n/labels';
-import type { ScheduleBlock, ScheduleDay, ScheduleSlot } from '../../core/api/models/enums';
+import type {
+  Country,
+  ScheduleBlock,
+  ScheduleDay,
+  ScheduleSlot,
+} from '../../core/api/models/enums';
 import {
   BLOCK_HOURS,
   PROFILE_BLOCKS,
@@ -9,6 +14,7 @@ import {
   WEEKDAY_NIGHTS,
   WEEKEND_BLOCKS,
 } from '../../core/profile/profile-options';
+import { formatBlockRange } from '../../core/utils/time';
 
 @Component({
   selector: 'app-schedule-picker',
@@ -79,7 +85,7 @@ import {
                 (click)="toggle(day, slot)"
                 [attr.aria-pressed]="isSelected(day, slot)"
                 [attr.aria-label]="
-                  i18n.t(dayKey(day)) + ', ' + i18n.t(slotKey(slot)) + ' (' + hours[slot] + ')'
+                  i18n.t(dayKey(day)) + ', ' + i18n.t(slotKey(slot)) + ' (' + slotHours(slot) + ')'
                 "
                 class="flex min-h-11 flex-col items-center justify-center rounded-xl border px-1 py-1.5 text-[11px] font-semibold transition"
                 [class.border-accent]="isSelected(day, slot)"
@@ -89,7 +95,7 @@ import {
                 [class.text-muted]="!isSelected(day, slot)"
               >
                 <span>{{ i18n.t(slotKey(slot)) }}</span>
-                <span class="text-[10px] font-medium opacity-75">{{ hours[slot] }}</span>
+                <span class="text-[10px] font-medium opacity-75">{{ slotHours(slot) }}</span>
               </button>
             }
           </div>
@@ -102,6 +108,7 @@ export class SchedulePickerComponent {
   protected readonly i18n = inject(I18nService);
 
   readonly value = input<ScheduleBlock[]>([]);
+  readonly country = input<Country | null>(null);
   readonly valueChange = output<ScheduleBlock[]>();
 
   protected readonly days = PROFILE_DAYS;
@@ -118,6 +125,10 @@ export class SchedulePickerComponent {
 
   protected slotKey(slot: ScheduleSlot) {
     return BLOCK_LABEL_KEYS[slot];
+  }
+
+  protected slotHours(slot: ScheduleSlot): string {
+    return this.country() ? formatBlockRange(slot, this.country()) : this.hours[slot];
   }
 
   protected isSelected(day: ScheduleDay, slot: ScheduleSlot): boolean {

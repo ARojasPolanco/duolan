@@ -8,13 +8,17 @@ export interface AramPost {
   playersPresent: number;
   slotsNeeded: number;
   window: AramWindow;
+  windowLabel?: string;
   hasMic: boolean;
   note: string | null;
   status: 'active' | 'filled' | 'expired' | 'cancelled';
   expiresAt: string;
   createdAt: string;
+  isMine?: boolean;
   owner: PublicProfile;
   applicationsCount?: number;
+  pendingApplicationsCount?: number;
+  myApplicationStatus?: ApplicationStatus | null;
 }
 
 export interface AramResponse {
@@ -30,8 +34,8 @@ export interface AramPostResponse {
 export interface AramMineResponse {
   status: 'success';
   post: AramPost | null;
-  received: AramApplication[];
-  sent: AramApplication[];
+  applications: AramApplication[];
+  myApplications: AramApplication[];
 }
 
 export interface AramApplication {
@@ -39,7 +43,8 @@ export interface AramApplication {
   message: string | null;
   status: ApplicationStatus;
   createdAt: string;
-  applicant: PublicProfile;
+  applicant?: PublicProfile;
+  post?: AramPost;
 }
 
 export interface CreateAramPostRequest {

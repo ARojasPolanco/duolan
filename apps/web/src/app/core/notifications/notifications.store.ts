@@ -11,6 +11,7 @@ import type {
 } from '../api/models/notification.model';
 import { AuthService } from '../auth/auth.service';
 import { I18nService } from '../i18n/i18n.service';
+import { localizeNotification } from './notification-text';
 import { SseService } from '../realtime/sse.service';
 import { ToastService } from '../toast/toast.service';
 
@@ -130,7 +131,12 @@ export class NotificationsStore {
     const info = payload?.data;
 
     if (info?.title && this.router.url.split('?')[0] !== '/notificaciones') {
-      const message = info.message ? `${info.title} — ${info.message}` : info.title;
+      const text = localizeNotification(this.i18n, {
+        type: info.notificationType,
+        title: info.title,
+        message: info.message,
+      });
+      const message = text.message ? `${text.title} - ${text.message}` : text.title;
       this.toast.info(message);
     }
 

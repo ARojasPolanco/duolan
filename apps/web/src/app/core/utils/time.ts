@@ -1,5 +1,5 @@
 import { COUNTRY_TIMEZONES, TIMEZONE } from '@duolan/shared/constants';
-import type { Country } from '../api/models/enums';
+import type { Country, ScheduleSlot } from '../api/models/enums';
 
 const partsFormatterCache = new Map<string, Intl.DateTimeFormat>();
 
@@ -42,20 +42,46 @@ const offsetMinutes = (timeZone: string, date: Date): number => {
   return Math.round((asUtc - date.getTime()) / 60000);
 };
 
+const BLOCK_RANGES: Record<ScheduleSlot, [number, number]> = {
+  early: [0, 6],
+  morning: [6, 12],
+  afternoon: [12, 18],
+  night: [18, 24],
+};
+
+const pad = (value: number): string => String(value).padStart(2, '0');
+
+const clock = (minutes: number, isEnd = false): string => {
+  const normalized = ((minutes % 1440) + 1440) % 1440;
+  if (isEnd && normalized === 0) return '24:00';
+  return `${pad(Math.floor(normalized / 60))}:${pad(normalized % 60)}`;
+};
+
+export const getCountryOffsetMinutes = (country: Country | null): number => {
+  if (!country) return 0;
+  const timeZone = COUNTRY_TIMEZONES[country];
+  if (!timeZone) return 0;
+  const date = new Date();
+  return offsetMinutes(timeZone, date) - offsetMinutes(TIMEZONE, date);
+};
+
 export const formatCountryOffset = (country: Country | null): string => {
   if (!country) return '';
 
-  const timeZone = COUNTRY_TIMEZONES[country];
-  if (!timeZone) return '';
-
-  const diffMinutes = offsetMinutes(timeZone, new Date()) - offsetMinutes(TIMEZONE, new Date());
-  if (diffMinutes === 0) return 'misma hora';
+  const diffMinutes = getCountryOffsetMinutes(country);
+  if (diffMinutes === 0) return 'misma hora que LAN';
 
   const hours = diffMinutes / 60;
   const formatted = new Intl.NumberFormat('es-MX', { maximumFractionDigits: 1 }).format(
     Math.abs(hours),
   );
-  return `${hours > 0 ? '+' : '−'}${formatted} h`;
+  return `${hours > 0 ? '+' : '-'}${formatted} h vs. LAN`;
+};
+
+export const formatBlockRange = (slot: ScheduleSlot, country: Country | null): string => {
+  const range = BLOCK_RANGES[slot];
+  const diffMinutes = getCountryOffsetMinutes(country);
+  return `${clock(range[0] * 60 + diffMinutes)}-${clock(range[1] * 60 + diffMinutes, true)}`;
 };
 
 export const formatDateTime = (value: string | Date, locale = 'es-MX'): string =>

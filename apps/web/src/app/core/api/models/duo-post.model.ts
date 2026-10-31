@@ -15,12 +15,17 @@ export interface DuoPost {
   rolesNeeded: Role[];
   rankMinTier: RankTier;
   rankMaxTier: RankTier;
+  rankMinIndex?: number;
+  rankMaxIndex?: number;
   note: string | null;
   status: PostStatus;
   expiresAt: string;
   createdAt: string;
+  isMine?: boolean;
   owner: PublicProfile;
   applicationsCount?: number;
+  pendingApplicationsCount?: number;
+  myApplicationStatus?: ApplicationStatus | null;
 }
 
 export interface DuoPostsResponse {
@@ -40,6 +45,7 @@ export interface DuoApplication {
   createdAt: string;
   applicant: PublicProfile;
   score?: number;
+  breakdown?: Record<string, number>;
 }
 
 export interface DuoApplicationsResponse {

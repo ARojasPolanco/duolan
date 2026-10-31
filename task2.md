@@ -4,10 +4,10 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 
 ## Estado actual
 
-- **Fase:** Fases 0, 1, 2, 3 y 4 completadas. Siguiente: Fase 5 (paridad completa).
+- **Fase:** Fases 0, 1, 2, 3 y 4 completadas. Fase 5 funcional completa: disponibilidad, invitaciones, Busco 1, ARAM y admin. Pendiente: card Conectados y pulido de calidad.
 - **Repo:** rama `dev` publicada en `origin/dev`; `main` no se tocó todavía.
 - **Backend:** copia adaptada de Duo LAS con `GAME_SERVER=LAN`, migración LAN y branding Duo LAN.
-- **Frontend:** público, auth, onboarding, perfil, match, matches y notificaciones completos en Angular 21. Faltan disponibilidad, invitaciones, Busco 1, ARAM y admin.
+- **Frontend:** público, auth, onboarding, perfil, match, matches y notificaciones completos en Angular 21. Incluye disponibilidad, invitaciones, Busco 1, ARAM y admin.
 - **Base de datos:** PostgreSQL 16 local para desarrollo y tests. Neon pendiente de deploy.
 - **Dominio:** `duolan.online`, DNS en Hostinger.
 - **API:** `api.duolan.online`.
@@ -89,6 +89,69 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - Push con permiso explícito, service worker, PWA y click de push a la ruta correcta.
 - Tests: 37 de Angular (incluye SSE).
 - Smoke real con Chrome headless: match, matches y notificaciones con SSE en vivo sin errores de consola.
+
+## Ajuste de paridad Fase 4 (2026-10-30)
+
+- Inicio convertido en dashboard: resumen de perfil, contacto copiable, candidatos con like/block, matches y recordatorio descartable.
+- Sesión: aviso al recuperar una cuenta programada para eliminación y manejo de 403 por suspensión con logout + redirect a login.
+- Landing con carrusel, cards de jugadores de ejemplo, features y CTA final.
+- Cómo funciona ampliado: Flex, tres modos, pasos, ARAM, push, privacidad y CTA.
+- Shell: iconos en navegación mobile, acceso a invitaciones y eliminación de cuenta desde el menú.
+- Horarios: bloques visibles en hora local según país y aviso de offset contra LAN.
+- Notificaciones: iconos por tipo en lugar de marcador genérico.
+- Notificaciones de match creado traducidas al inglés en lista y toasts.
+- Bloquear y archivar usan diálogo propio en vez de `window.confirm`.
+- Tests: 41 de Angular; lint y build verdes.
+- Smoke visual headless: landing, cómo funciona e inicio autenticado sin errores.
+- Pendiente: commit y push de este ajuste.
+
+## Avance Fase 5 - Disponibilidad e invitaciones (2026-10-31)
+
+- `/disponible` con apertura 30/60 min, roles, cola, nota, cierre manual y contador de TTL.
+- Lista de jugadores disponibles con filtros, score, reputación y formulario de invitación.
+- `/invitaciones` con bandejas recibidas/enviadas, aceptar, rechazar y cancelar.
+- Contacto revelado al aceptar y acceso directo a Matches.
+- Estados de invitación, vencimiento y acciones con carga.
+- Rutas actualizadas desde placeholders a lazy loading real.
+- Tests: 41 de Angular; lint y build verdes.
+- Pendiente Fase 5: Busco 1, ARAM y Admin.
+
+## Avance Fase 5 - Busco 1 (2026-10-31)
+
+- `/busco-1` con exploración, filtros por cola y rol, y estados vacíos.
+- Creación de publicaciones con cola, hasta dos roles, rango mínimo/máximo y nota.
+- Postulación con mensaje y estado de la postulación propia.
+- Vista "Mis publicaciones" con contadores, postulaciones, aceptar/rechazar y cierre.
+- Contacto revelado al aceptar una postulación y acceso a Matches.
+- Confirmación propia para cerrar publicaciones.
+- Smoke visual y prueba real de crear/cerrar publicación.
+- Tests: 41 de Angular; lint y build verdes.
+- Pendiente Fase 5: ARAM y Admin.
+
+## Avance Fase 5 - ARAM (2026-10-31)
+
+- `/aram` con tabs Busco grupo y Disponible ahora.
+- Publicación de grupo con jugadores presentes, cupos, ventana, micrófono y nota.
+- Disponibilidad individual para ARAM.
+- Postulaciones, aceptar/rechazar, retirar solicitud y cerrar publicación.
+- Conexiones `source='aram'` y notificaciones existentes del backend.
+- Confirmación propia para cerrar publicaciones.
+- Smoke visual y prueba real de crear/cerrar publicación.
+- Tests: 41 de Angular; lint y build verdes.
+- Pendiente Fase 5: Admin.
+
+## Avance Fase 5 - Admin (2026-10-31)
+
+- Dashboard admin con métricas operativas reales, últimos likes/matches y enlaces filtrados.
+- `/admin/usuarios` con búsqueda, filtros, paginación y acceso al detalle.
+- `/admin/usuarios/:id` con cuenta, perfil, estadísticas, reportes, sanciones y acciones de moderación.
+- Advertencias, suspensiones 7/30/permanente y solicitudes de username.
+- `/admin/reportes` con filtros, nota y resolución de reportes.
+- `/admin/metrics` con rango de fechas y los cuatro KPIs del MVP.
+- Modelos y servicios de admin ajustados a las respuestas reales del backend.
+- Smoke visual de las pantallas admin con `demo_admin`.
+- Tests: 41 de Angular; lint y build verdes.
+- Pendiente: card "Conectados ahora", métricas ARAM y pulido de calidad.
 
 ## Leyenda
 
@@ -379,60 +442,60 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 
 ### Disponibilidad
 
-- [ ] `/disponible`.
-- [ ] Abrir disponibilidad 30/60 minutos.
-- [ ] Elegir roles y cola.
-- [ ] TTL y cierre automático.
-- [ ] Lista de disponibles.
-- [ ] Invitar.
-- [ ] Filtros.
+- [x] `/disponible`.
+- [x] Abrir disponibilidad 30/60 minutos.
+- [x] Elegir roles y cola.
+- [x] TTL y cierre automático.
+- [x] Lista de disponibles.
+- [x] Invitar.
+- [x] Filtros.
 - [ ] Estado vencido.
 
 ### Invitaciones
 
-- [ ] `/invitaciones`.
-- [ ] Recibidas y enviadas.
-- [ ] Aceptar, rechazar y cancelar.
-- [ ] Vencimiento a 10 minutos.
-- [ ] Crear conexión al aceptar.
-- [ ] Contacto revelado.
-- [ ] Notificaciones.
+- [x] `/invitaciones`.
+- [x] Recibidas y enviadas.
+- [x] Aceptar, rechazar y cancelar.
+- [x] Vencimiento a 10 minutos.
+- [x] Crear conexión al aceptar.
+- [x] Contacto revelado.
+- [x] Notificaciones.
 
 ### Busco 1
 
-- [ ] `/busco-1`.
-- [ ] Crear publicación.
-- [ ] Filtros.
-- [ ] Postularse.
-- [ ] Aceptar/rechazar postulación.
-- [ ] Cerrar publicación.
+- [x] `/busco-1`.
+- [x] Crear publicación.
+- [x] Filtros.
+- [x] Postularse.
+- [x] Aceptar/rechazar postulación.
+- [x] Cerrar publicación.
 - [ ] Límites de posts y postulaciones.
-- [ ] Notificaciones.
+- [x] Notificaciones.
 
 ### ARAM
 
-- [ ] `/aram`.
-- [ ] Publicar grupo.
-- [ ] Disponibilidad individual.
-- [ ] Postulaciones.
-- [ ] Aceptar postulación.
-- [ ] Conexión `source='aram'`.
-- [ ] Notificaciones y push.
+- [x] `/aram`.
+- [x] Publicar grupo.
+- [x] Disponibilidad individual.
+- [x] Postulaciones.
+- [x] Aceptar postulación.
+- [x] Conexión `source='aram'`.
+- [x] Notificaciones y push.
 - [ ] Métricas ARAM.
 
 ### Admin
 
-- [ ] `/admin`.
-- [ ] `/admin/usuarios`.
-- [ ] `/admin/usuarios/:id`.
-- [ ] `/admin/reportes`.
-- [ ] `/admin/metrics`.
-- [ ] Búsqueda y filtros.
-- [ ] Advertencias.
-- [ ] Suspensiones.
-- [ ] Resolución de reportes.
-- [ ] Solicitudes de username.
-- [ ] Métricas.
+- [x] `/admin`.
+- [x] `/admin/usuarios`.
+- [x] `/admin/usuarios/:id`.
+- [x] `/admin/reportes`.
+- [x] `/admin/metrics`.
+- [x] Búsqueda y filtros.
+- [x] Advertencias.
+- [x] Suspensiones.
+- [x] Resolución de reportes.
+- [x] Solicitudes de username.
+- [x] Métricas.
 - [ ] Card “Conectados ahora” con SSE activo y auto-refresh cada 30 s.
 
 ### Calidad
@@ -527,11 +590,11 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - [ ] Onboarding completo.
 - [ ] Perfil público sin email, Riot ID, Discord ni WhatsApp.
 - [ ] Forgot/reset.
-- [ ] Match, like y match mutuo.
-- [ ] Contacto revelado.
+- [x] Match, like y match mutuo.
+- [x] Contacto revelado.
 - [ ] Disponibilidad.
 - [ ] Invitaciones.
-- [ ] Busco 1.
+- [x] Busco 1.
 - [ ] ARAM.
 - [ ] Feedback.
 - [ ] Reporte y bloqueo.
@@ -542,9 +605,9 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - [ ] 401 sin token sin loops.
 - [ ] CORS desde `duolan.online`.
 - [ ] Términos, privacidad y aviso de Riot.
-- [ ] Mobile y desktop.
+- [x] Mobile y desktop.
 - [ ] Logs sin secretos.
-- [ ] Migración down/up verificada.
+- [x] Migración down/up verificada.
 - [ ] `npm test`, lint y build verdes.
 - [ ] `task2.md` actualizado.
 - [ ] Release aprobado para `main`.
@@ -566,13 +629,13 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - [ ] Aviso Riot.
 - [ ] Onboarding.
 - [ ] Inicio.
-- [ ] Match.
+- [x] Match.
 - [ ] ARAM.
-- [ ] Matches.
+- [x] Matches.
 - [ ] Disponible.
 - [ ] Invitaciones.
-- [ ] Busco 1.
-- [ ] Notificaciones.
+- [x] Busco 1.
+- [x] Notificaciones.
 - [ ] Perfil.
 - [ ] Solicitud de username.
 - [ ] Admin resumen.
@@ -586,20 +649,20 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 
 - [ ] Auth completo.
 - [ ] Perfil completo.
-- [ ] Matching por afinidad.
+- [x] Matching por afinidad.
 - [ ] Likes y match mutuo.
 - [ ] Disponibilidad.
 - [ ] Invitaciones.
-- [ ] Busco 1.
+- [x] Busco 1.
 - [ ] ARAM.
 - [ ] Feedback y reputación.
 - [ ] Reportes y bloqueos.
-- [ ] Notificaciones.
+- [x] Notificaciones.
 - [ ] SSE y polling.
 - [ ] Push y PWA.
 - [ ] Cambio de username.
 - [ ] Admin y moderación.
-- [ ] Métricas.
+- [x] Métricas.
 - [ ] Rate limits.
 - [ ] Seed de desarrollo.
 - [ ] Seed de admin.

@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  OnInit,
   inject,
   input,
   signal,
@@ -12,6 +13,7 @@ import { Router, RouterLink } from '@angular/router';
 import { toUserMessage } from '../../../core/api/api-error';
 import { AuthService } from '../../../core/auth/auth.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { ToastService } from '../../../core/toast/toast.service';
 import { AuthShellComponent } from '../../../shared/layout/auth-shell.component';
 import { ButtonComponent } from '../../../shared/ui/button.component';
 import { TextInputComponent } from '../../../shared/ui/text-input.component';
@@ -69,11 +71,12 @@ import { TextInputComponent } from '../../../shared/ui/text-input.component';
     </app-auth-shell>
   `,
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly formBuilder = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly toast = inject(ToastService);
   protected readonly i18n = inject(I18nService);
 
   readonly redirect = input('');
@@ -84,6 +87,14 @@ export class LoginPage {
     identifier: ['', [Validators.required]],
     password: ['', [Validators.required]],
   });
+
+  ngOnInit(): void {
+    const flash = sessionStorage.getItem('duolan_flash');
+    if (flash) {
+      sessionStorage.removeItem('duolan_flash');
+      this.errorMessage.set(flash);
+    }
+  }
 
   protected identifierError(): string {
     const control = this.form.controls.identifier;
@@ -112,11 +123,16 @@ export class LoginPage {
       .login(this.form.getRawValue())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (user) => {
+        next: (response) => {
           this.submitting.set(false);
+          const user = response.user;
           const redirect = this.redirect() ?? '';
           const safeRedirect =
             redirect.startsWith('/') && !redirect.startsWith('//') ? redirect : '';
+
+          if (response.recovered) {
+            this.toast.success(this.i18n.t('auth.recovered'));
+          }
 
           if (user.role === 'admin') {
             void this.router.navigate(['/admin'], { replaceUrl: true });

@@ -37,6 +37,7 @@ describe('HTTP interceptors', () => {
 
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
 
     router = {
       url: '/inicio',
@@ -117,6 +118,22 @@ describe('HTTP interceptors', () => {
 
     expect(auth.getToken()).toBeNull();
     expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('en 403 de cuenta suspendida limpia la sesión, guarda el aviso y redirige', () => {
+    const http = TestBed.inject(HttpClient);
+
+    http.get('/api/v1/profiles/me').subscribe({ error: () => undefined });
+    httpMock
+      .expectOne('/api/v1/profiles/me')
+      .flush(
+        { status: 'fail', message: 'Tu cuenta está suspendida.' },
+        { status: 403, statusText: 'Forbidden' },
+      );
+
+    expect(auth.getToken()).toBeNull();
+    expect(sessionStorage.getItem('duolan_flash')).toContain('suspendida');
+    expect(router.navigate).toHaveBeenCalledWith(['/login']);
   });
 
   it('en 401 de un endpoint de auth no limpia la sesión ni redirige', () => {

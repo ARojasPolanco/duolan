@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { catchError, of, switchMap } from 'rxjs';
-import type { Language, RankTier } from '../../../core/api/models/enums';
+import type { Country, Language, RankTier } from '../../../core/api/models/enums';
 import { ProfilesService } from '../../../core/api/profiles.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import {
@@ -32,6 +32,7 @@ import {
   profileStepError,
 } from '../../../core/profile/profile-form';
 import { ToastService } from '../../../core/toast/toast.service';
+import { formatCountryOffset } from '../../../core/utils/time';
 import { RankIconComponent } from '../../../shared/icons/rank-icon.component';
 import { RoleIconComponent } from '../../../shared/icons/role-icon.component';
 import { SchedulePickerComponent } from '../../../shared/profile/schedule-picker.component';
@@ -246,9 +247,19 @@ import { TextInputComponent } from '../../../shared/ui/text-input.component';
           <app-card padding="lg">
             <h2 class="text-lg font-bold">{{ i18n.t('profile.schedule') }}</h2>
             <p class="mt-2 text-sm text-muted">{{ i18n.t('profile.scheduleBody') }}</p>
+            @if (selectedCountry()) {
+              <p class="mt-2 text-xs leading-relaxed text-muted">
+                {{
+                  i18n.t('onboarding.countryOffset', {
+                    offset: countryOffset(selectedCountry()),
+                  })
+                }}
+              </p>
+            }
             <div class="mt-4">
               <app-schedule-picker
                 [value]="form.controls.scheduleBlocks.value"
+                [country]="selectedCountry()"
                 (valueChange)="form.controls.scheduleBlocks.setValue($event)"
               />
             </div>
@@ -349,7 +360,7 @@ import { TextInputComponent } from '../../../shared/ui/text-input.component';
           </div>
         </form>
 
-        <app-card padding="lg">
+        <app-card id="eliminar-cuenta" padding="lg">
           <h2 class="text-lg font-bold text-danger">{{ i18n.t('accountDelete.open') }}</h2>
           <p class="mt-2 text-sm text-muted">{{ i18n.t('accountDelete.hint') }}</p>
           <app-button class="mt-4" variant="danger" (click)="openDelete()">
@@ -496,6 +507,15 @@ export class ProfilePage {
     ) {
       this.form.controls.flexRankDivision.setValue('');
     }
+  }
+
+  protected selectedCountry(): Country | null {
+    const country = this.form.controls.country.value;
+    return country ? (country as Country) : null;
+  }
+
+  protected countryOffset(country: Country | null): string {
+    return formatCountryOffset(country);
   }
 
   protected isApex(): boolean {

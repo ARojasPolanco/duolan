@@ -1,12 +1,6 @@
 import type { Routes } from '@angular/router';
 import { adminGuard, authGuard, playerGuard, profileCompletedGuard } from './core/auth/guards';
 
-const placeholder = (title: string, description: string) => ({
-  loadComponent: () =>
-    import('./features/shared/pages/placeholder-page').then((module) => module.PlaceholderPage),
-  data: { title, description },
-});
-
 export const routes: Routes = [
   {
     path: '',
@@ -113,7 +107,8 @@ export const routes: Routes = [
       {
         path: 'aram',
         canActivate: [profileCompletedGuard],
-        ...placeholder('ARAM', 'La búsqueda de ARAM llega en la Fase 5.'),
+        loadComponent: () =>
+          import('./features/aram/pages/aram-page').then((module) => module.AramPage),
         title: 'ARAM - Duo LAN',
       },
       {
@@ -126,19 +121,24 @@ export const routes: Routes = [
       {
         path: 'disponible',
         canActivate: [profileCompletedGuard],
-        ...placeholder('Disponible ya', 'La disponibilidad inmediata llega en la Fase 5.'),
+        loadComponent: () =>
+          import('./features/availability/pages/availability-page').then(
+            (module) => module.AvailabilityPage,
+          ),
         title: 'Disponible - Duo LAN',
       },
       {
         path: 'invitaciones',
         canActivate: [profileCompletedGuard],
-        ...placeholder('Invitaciones', 'Las invitaciones llegan en la Fase 5.'),
+        loadComponent: () =>
+          import('./features/invites/pages/invites-page').then((module) => module.InvitesPage),
         title: 'Invitaciones - Duo LAN',
       },
       {
         path: 'busco-1',
         canActivate: [profileCompletedGuard],
-        ...placeholder('Busco 1', 'Las publicaciones de grupo llegan en la Fase 5.'),
+        loadComponent: () =>
+          import('./features/duo-posts/pages/duo-posts-page').then((module) => module.DuoPostsPage),
         title: 'Busco 1 - Duo LAN',
       },
       {
@@ -190,22 +190,32 @@ export const routes: Routes = [
       },
       {
         path: 'usuarios',
-        ...placeholder('Usuarios', 'La búsqueda y el detalle de usuarios llegan en la Fase 5.'),
+        loadComponent: () =>
+          import('./features/admin/pages/admin-users-page').then((module) => module.AdminUsersPage),
         title: 'Admin usuarios - Duo LAN',
       },
       {
         path: 'usuarios/:id',
-        ...placeholder('Detalle de usuario', 'El detalle de usuario llega en la Fase 5.'),
+        loadComponent: () =>
+          import('./features/admin/pages/admin-user-detail-page').then(
+            (module) => module.AdminUserDetailPage,
+          ),
         title: 'Admin usuario - Duo LAN',
       },
       {
         path: 'reportes',
-        ...placeholder('Reportes', 'La moderación de reportes llega en la Fase 5.'),
+        loadComponent: () =>
+          import('./features/admin/pages/admin-reports-page').then(
+            (module) => module.AdminReportsPage,
+          ),
         title: 'Admin reportes - Duo LAN',
       },
       {
         path: 'metrics',
-        ...placeholder('Métricas', 'Las métricas de admin llegan en la Fase 5.'),
+        loadComponent: () =>
+          import('./features/admin/pages/admin-metrics-page').then(
+            (module) => module.AdminMetricsPage,
+          ),
         title: 'Admin métricas - Duo LAN',
       },
     ],

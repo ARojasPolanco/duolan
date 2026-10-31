@@ -61,11 +61,10 @@ export class AuthService {
     return this._token();
   }
 
-  login(payload: LoginRequest): Observable<AuthUser> {
-    return this.api.post<AuthResponse>('/auth/login', payload).pipe(
-      tap((response) => this.setSession(response.token, response.user)),
-      map((response) => response.user),
-    );
+  login(payload: LoginRequest): Observable<AuthResponse> {
+    return this.api
+      .post<AuthResponse>('/auth/login', payload)
+      .pipe(tap((response) => this.setSession(response.token, response.user)));
   }
 
   register(payload: RegisterRequest): Observable<AuthUser> {

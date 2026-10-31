@@ -4,6 +4,7 @@ import { of, throwError } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ApiError } from '../../../core/api/api-error';
 import { AuthService } from '../../../core/auth/auth.service';
+import { ToastService } from '../../../core/toast/toast.service';
 import { LoginPage } from './login-page';
 
 describe('LoginPage', () => {
@@ -55,16 +56,21 @@ describe('LoginPage', () => {
   it('inicia sesión y navega a inicio cuando no hay redirect', async () => {
     login.mockReturnValue(
       of({
-        id: 'user-1',
-        username: 'demo_mid',
-        email: 'demo_mid@duolan.online',
-        role: 'player',
-        emailVerified: true,
-        status: 'active',
-        ageConfirmedAt: null,
-        termsAcceptedAt: null,
-        warningCount: 0,
-        profileCompleted: true,
+        status: 'success',
+        token: 'token',
+        recovered: false,
+        user: {
+          id: 'user-1',
+          username: 'demo_mid',
+          email: 'demo_mid@duolan.online',
+          role: 'player',
+          emailVerified: true,
+          status: 'active',
+          ageConfirmedAt: null,
+          termsAcceptedAt: null,
+          warningCount: 0,
+          profileCompleted: true,
+        },
       }),
     );
 
@@ -81,6 +87,46 @@ describe('LoginPage', () => {
     await fixture.whenStable();
 
     expect(login).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/inicio'], { replaceUrl: true });
+  });
+
+  it('avisa cuando se recupera una cuenta programada para eliminación', async () => {
+    const toast = TestBed.inject(ToastService);
+    const success = vi.spyOn(toast, 'success').mockReturnValue(1);
+
+    login.mockReturnValue(
+      of({
+        status: 'success',
+        token: 'token',
+        recovered: true,
+        user: {
+          id: 'user-1',
+          username: 'demo_mid',
+          email: 'demo_mid@duolan.online',
+          role: 'player',
+          emailVerified: true,
+          status: 'active',
+          ageConfirmedAt: null,
+          termsAcceptedAt: null,
+          warningCount: 0,
+          profileCompleted: true,
+        },
+      }),
+    );
+
+    const fixture = TestBed.createComponent(LoginPage);
+    fixture.detectChanges();
+    fillInputs(fixture);
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector(
+      'button[type="submit"]',
+    ) as HTMLButtonElement;
+    button.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(success).toHaveBeenCalledWith('Recuperamos tu cuenta. La eliminación fue cancelada.');
     expect(router.navigate).toHaveBeenCalledWith(['/inicio'], { replaceUrl: true });
   });
 

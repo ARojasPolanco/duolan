@@ -6,6 +6,7 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import type { TranslationKey } from '../../../core/i18n/translations';
 import { NotificationsStore } from '../../../core/notifications/notifications.store';
+import { localizeNotification } from '../../../core/notifications/notification-text';
 import { PushService } from '../../../core/push/push.service';
 import type { SseStatus } from '../../../core/realtime/sse.service';
 import { ToastService } from '../../../core/toast/toast.service';
@@ -128,14 +129,25 @@ const SSE_LABEL_KEYS: Record<SseStatus, TranslationKey> = {
                   class="flex min-w-0 flex-1 items-start gap-3 text-left"
                 >
                   <span
-                    class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface-2 text-sm font-bold text-accent"
+                    class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface-2 text-accent"
                     aria-hidden="true"
                   >
-                    !
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path [attr.d]="iconPath(notification.type)" />
+                    </svg>
                   </span>
                   <span class="min-w-0 flex-1">
                     <span class="flex flex-wrap items-center gap-2">
-                      <span class="font-semibold">{{ notification.title }}</span>
+                      <span class="font-semibold">{{ displayTitle(notification) }}</span>
                       @if (!notification.isRead) {
                         <span
                           class="h-2 w-2 rounded-full bg-accent"
@@ -143,9 +155,9 @@ const SSE_LABEL_KEYS: Record<SseStatus, TranslationKey> = {
                         ></span>
                       }
                     </span>
-                    @if (notification.message) {
+                    @if (displayMessage(notification)) {
                       <span class="mt-1 block text-sm text-muted">
-                        {{ notification.message }}
+                        {{ displayMessage(notification) }}
                       </span>
                     }
                     <span class="mt-2 block text-[10px] text-muted">
@@ -206,6 +218,36 @@ export class NotificationsPage implements OnInit {
     return `rounded-2xl border bg-surface p-4 transition ${
       isRead ? 'border-border' : 'border-accent/40'
     }`;
+  }
+
+  protected displayTitle(notification: AppNotification): string {
+    return localizeNotification(this.i18n, notification).title;
+  }
+
+  protected displayMessage(notification: AppNotification): string {
+    return localizeNotification(this.i18n, notification).message;
+  }
+
+  protected iconPath(type: string): string {
+    if (type === 'match_created' || type === 'match_reminder') {
+      return 'm5 19 14-14M13 5h6v6M11 19H5v-6';
+    }
+    if (type === 'feedback_revealed') {
+      return 'M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z';
+    }
+    if (type.startsWith('username_')) {
+      return 'M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM16 12v1a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8';
+    }
+    if (type === 'warning_received' || type === 'account_suspended') {
+      return 'M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7zM12 8v4M12 16h.01';
+    }
+    if (type.includes('invite')) {
+      return 'M4 4h16v16H4zM4 14h4l2 3h4l2-3h4';
+    }
+    if (type.includes('application') || type.includes('post_')) {
+      return 'M9 4h6v3H9zM7 5H5v16h14V5h-2';
+    }
+    return 'M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4';
   }
 
   protected async openNotification(notification: AppNotification): Promise<void> {

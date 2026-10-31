@@ -21,15 +21,40 @@ import { LanguageToggleComponent } from '../ui/language-toggle.component';
 interface ShellLink {
   path: string;
   labelKey: TranslationKey;
+  icon: string;
 }
 
 const PRIMARY_LINKS: ShellLink[] = [
-  { path: '/inicio', labelKey: 'common.home' },
-  { path: '/match', labelKey: 'common.match' },
-  { path: '/aram', labelKey: 'common.aram' },
-  { path: '/disponible', labelKey: 'common.available' },
-  { path: '/busco-1', labelKey: 'common.lookingForOne' },
-  { path: '/matches', labelKey: 'common.matches' },
+  {
+    path: '/inicio',
+    labelKey: 'common.home',
+    icon: 'M3 10.5 12 3l9 7.5V21H3z',
+  },
+  {
+    path: '/match',
+    labelKey: 'common.match',
+    icon: 'm5 19 14-14M13 5h6v6M11 19H5v-6',
+  },
+  {
+    path: '/aram',
+    labelKey: 'common.aram',
+    icon: 'M4 8h16v8H4zM8 12h8',
+  },
+  {
+    path: '/disponible',
+    labelKey: 'common.available',
+    icon: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 7v5l3 2',
+  },
+  {
+    path: '/busco-1',
+    labelKey: 'common.lookingForOne',
+    icon: 'M8 6h8M8 12h8M8 18h5',
+  },
+  {
+    path: '/matches',
+    labelKey: 'common.matches',
+    icon: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',
+  },
 ];
 
 @Component({
@@ -175,6 +200,14 @@ const PRIMARY_LINKS: ShellLink[] = [
                       {{ i18n.t('common.howItWorks') }}
                     </a>
                     <a
+                      routerLink="/invitaciones"
+                      role="menuitem"
+                      (click)="closeMenu()"
+                      class="flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-muted transition hover:bg-surface-2 hover:text-text"
+                    >
+                      {{ i18n.t('common.invitations') }}
+                    </a>
+                    <a
                       routerLink="/notificaciones"
                       role="menuitem"
                       (click)="closeMenu()"
@@ -185,6 +218,15 @@ const PRIMARY_LINKS: ShellLink[] = [
                   </div>
 
                   <div class="border-t border-border p-1.5">
+                    <a
+                      routerLink="/perfil"
+                      fragment="eliminar-cuenta"
+                      role="menuitem"
+                      (click)="closeMenu()"
+                      class="flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-danger transition hover:bg-danger/10"
+                    >
+                      {{ i18n.t('accountDelete.title') }}
+                    </a>
                     <button
                       type="button"
                       role="menuitem"
@@ -236,16 +278,31 @@ const PRIMARY_LINKS: ShellLink[] = [
             <a
               [routerLink]="link.path"
               routerLinkActive="text-accent"
-              class="relative flex min-h-14 flex-1 flex-col items-center justify-center px-1 text-[9px] font-semibold text-muted transition"
+              class="relative flex min-h-14 flex-1 flex-col items-center justify-center gap-0.5 px-1 text-[9px] font-semibold text-muted transition"
             >
-              {{ i18n.t(link.labelKey) }}
-              @if (link.path === '/match' && matching.candidateCount()) {
-                <span
-                  class="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[9px] font-bold text-bg"
+              <span class="relative inline-flex">
+                <svg
+                  width="19"
+                  height="19"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
                 >
-                  {{ candidateBadge() }}
-                </span>
-              }
+                  <path [attr.d]="link.icon" />
+                </svg>
+                @if (link.path === '/match' && matching.candidateCount()) {
+                  <span
+                    class="absolute -right-3 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[9px] font-bold text-bg"
+                  >
+                    {{ candidateBadge() }}
+                  </span>
+                }
+              </span>
+              {{ i18n.t(link.labelKey) }}
             </a>
           }
         </div>
