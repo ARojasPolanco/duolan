@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /inicio
+Disallow: /match
+Disallow: /aram
+Disallow: /matches
+Disallow: /disponible
+Disallow: /invitaciones
+Disallow: /busco-1
+Disallow: /notificaciones
+Disallow: /perfil
+Disallow: /onboarding
+Disallow: /solicitud-username
+Disallow: /verify-email
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /cuenta-eliminada
+Disallow: /error
+
+Sitemap: https://duolan.online/sitemap.xml

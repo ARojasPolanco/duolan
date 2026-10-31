@@ -1,13 +1,17 @@
 {
+  "id": "/",
   "name": "Duo LAN",
   "short_name": "Duo LAN",
-  "description": "Encontrá tu duo de League of Legends en LAN. Fase beta.",
+  "description": "Encontrá tu duo de League of Legends en el servidor LAN. Match por afinidad, disponibilidad y objetivos. Solo mayores de 18 años.",
   "start_url": "/inicio",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "background_color": "#030407",
   "theme_color": "#030407",
   "lang": "es-MX",
+  "dir": "ltr",
+  "categories": ["games", "social", "lifestyle"],
   "icons": [
     {
       "src": "/icons/icon-192.png",
@@ -19,7 +23,34 @@
       "src": "/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Buscar match",
+      "short_name": "Match",
+      "url": "/match",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Disponible ya",
+      "short_name": "Disponible",
+      "url": "/disponible",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Busco 1",
+      "short_name": "Busco 1",
+      "url": "/busco-1",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
 }
