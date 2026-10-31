@@ -197,7 +197,7 @@ const USERNAME_CLASS: Record<string, string> = {
                   placeholder="Motivo"
                 />
                 <app-button
-                  class="mt-2"
+                  class="mt-4"
                   variant="danger"
                   size="sm"
                   [loading]="busy() === 'warn'"
@@ -225,7 +225,7 @@ const USERNAME_CLASS: Record<string, string> = {
                   placeholder="Motivo"
                 />
                 <app-button
-                  class="mt-2"
+                  class="mt-4"
                   variant="danger"
                   size="sm"
                   [loading]="busy() === 'suspend'"
@@ -263,7 +263,7 @@ const USERNAME_CLASS: Record<string, string> = {
                   placeholder="Nota (opcional)"
                 />
                 @if (request.status === 'pending_admin') {
-                  <div class="mt-3 flex flex-wrap gap-2">
+                  <div class="mt-4 flex flex-wrap gap-3">
                     <app-button
                       size="sm"
                       [loading]="busy() === 'username'"
@@ -291,7 +291,7 @@ const USERNAME_CLASS: Record<string, string> = {
                 placeholder="Motivo (opcional)"
               />
               <app-button
-                class="mt-2"
+                class="mt-4"
                 variant="secondary"
                 size="sm"
                 [loading]="busy() === 'username'"

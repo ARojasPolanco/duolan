@@ -42,7 +42,7 @@ const percent = (value: number | null): string =>
       </header>
 
       <app-card padding="sm">
-        <div class="flex flex-wrap items-end gap-3">
+        <div class="flex flex-wrap items-end gap-4">
           <label class="grid gap-1.5 text-xs font-semibold text-muted">
             Desde
             <input

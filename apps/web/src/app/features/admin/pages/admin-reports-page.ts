@@ -47,7 +47,7 @@ const RESOLUTIONS: { value: ResolveReportRequest['resolution']; label: string }[
       </header>
 
       <app-card padding="sm">
-        <div class="grid gap-2 sm:flex sm:flex-wrap sm:items-center">
+        <div class="grid gap-3 sm:flex sm:flex-wrap sm:items-center">
           <select
             [value]="status()"
             (change)="setStatus($event)"
@@ -156,7 +156,7 @@ const RESOLUTIONS: { value: ResolveReportRequest['resolution']; label: string }[
                     placeholder="Nota interna / motivo de la sanción (opcional)"
                     class="resize-none rounded-xl border border-border bg-bg px-3 py-2.5 text-xs text-text placeholder:text-muted/60"
                   ></textarea>
-                  <div class="flex flex-wrap gap-2">
+                  <div class="flex flex-wrap gap-3">
                     <select
                       [value]="resolutionFor(report.id)"
                       (change)="setResolution(report.id, $event)"
