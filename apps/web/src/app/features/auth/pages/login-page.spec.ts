@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
-import { throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ApiError } from '../../../core/api/api-error';
 import { AuthService } from '../../../core/auth/auth.service';
@@ -50,6 +50,38 @@ describe('LoginPage', () => {
     expect(login).not.toHaveBeenCalled();
     expect(fixture.nativeElement.textContent).toContain('Ingresá tu email o username');
     expect(fixture.nativeElement.textContent).toContain('Ingresá tu contraseña');
+  });
+
+  it('inicia sesión y navega a inicio cuando no hay redirect', async () => {
+    login.mockReturnValue(
+      of({
+        id: 'user-1',
+        username: 'demo_mid',
+        email: 'demo_mid@duolan.online',
+        role: 'player',
+        emailVerified: true,
+        status: 'active',
+        ageConfirmedAt: null,
+        termsAcceptedAt: null,
+        warningCount: 0,
+        profileCompleted: true,
+      }),
+    );
+
+    const fixture = TestBed.createComponent(LoginPage);
+    fixture.detectChanges();
+    fillInputs(fixture);
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector(
+      'button[type="submit"]',
+    ) as HTMLButtonElement;
+    button.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(login).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/inicio'], { replaceUrl: true });
   });
 
   it('muestra el error del backend sin redirigir', async () => {

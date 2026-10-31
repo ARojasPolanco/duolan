@@ -114,7 +114,7 @@ export class LoginPage {
       .subscribe({
         next: (user) => {
           this.submitting.set(false);
-          const redirect = this.redirect();
+          const redirect = this.redirect() ?? '';
           const safeRedirect =
             redirect.startsWith('/') && !redirect.startsWith('//') ? redirect : '';
 
