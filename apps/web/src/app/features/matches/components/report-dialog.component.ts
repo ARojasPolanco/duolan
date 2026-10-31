@@ -38,7 +38,7 @@ const REASONS: ReportReason[] = [
     >
       <p class="text-sm text-muted">{{ i18n.t('report.subtitle') }}</p>
 
-      <form class="mt-4 grid gap-4" (ngSubmit)="submit()">
+      <form class="mt-4 grid gap-4" (submit)="submit($event)">
         <label class="grid gap-1.5 text-xs font-semibold text-muted">
           {{ i18n.t('report.reason') }}
           <select
@@ -102,7 +102,9 @@ export class ReportDialogComponent {
     this.details.set((event.target as HTMLTextAreaElement).value);
   }
 
-  protected submit(): void {
+  protected submit(event: Event): void {
+    event.preventDefault();
+
     if (this.reason() === 'other' && !this.details().trim()) {
       this.toast.error(this.i18n.t('report.detailRequired'));
       return;

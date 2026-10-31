@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  OnInit,
   inject,
   input,
   output,
@@ -132,7 +133,7 @@ const NEGATIVE_TAGS: FeedbackTag[] = [
         }
 
         @if (!detail.mine && detail.windowOpen) {
-          <form class="mt-4 space-y-3" (ngSubmit)="submit()">
+          <form class="mt-4 space-y-3" (submit)="submit($event)">
             <div class="flex gap-2">
               <button
                 type="button"
@@ -199,7 +200,7 @@ const NEGATIVE_TAGS: FeedbackTag[] = [
     </section>
   `,
 })
-export class FeedbackPanelComponent {
+export class FeedbackPanelComponent implements OnInit {
   private readonly trust = inject(TrustService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly toast = inject(ToastService);
@@ -221,7 +222,7 @@ export class FeedbackPanelComponent {
     this.sentiment() === 'positive' ? POSITIVE_TAGS : NEGATIVE_TAGS;
   protected readonly formatDate = (value: string) => formatDateTime(value, this.i18n.locale());
 
-  constructor() {
+  ngOnInit(): void {
     this.load();
   }
 
@@ -255,7 +256,9 @@ export class FeedbackPanelComponent {
     this.tags.set([...current, tag]);
   }
 
-  protected submit(): void {
+  protected submit(event: Event): void {
+    event.preventDefault();
+
     if (this.sentiment() === 'negative' && !this.tags().length) {
       this.toast.error(this.i18n.t('feedback.chooseTag'));
       return;

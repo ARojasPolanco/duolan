@@ -20,7 +20,7 @@ import { TextInputComponent } from '../../../shared/ui/text-input.component';
   ],
   template: `
     <app-auth-shell [title]="i18n.t('forgot.title')" [subtitle]="i18n.t('forgot.subtitle')">
-      <form class="grid gap-4" (ngSubmit)="submit()" novalidate>
+      <form class="grid gap-4" (submit)="submit($event)" novalidate>
         @if (sent()) {
           <p
             class="rounded-xl border border-success/40 bg-success/10 px-3 py-2 text-xs text-success"
@@ -75,7 +75,9 @@ export class ForgotPasswordPage {
     return '';
   }
 
-  protected submit(): void {
+  protected submit(event: Event): void {
+    event.preventDefault();
+
     if (this.email.invalid) {
       this.email.markAsTouched();
       return;

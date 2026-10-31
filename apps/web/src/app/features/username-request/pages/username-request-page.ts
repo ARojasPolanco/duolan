@@ -98,7 +98,7 @@ const STATUS_META: Record<
             }
 
             @if (request.status === 'pending_user') {
-              <form class="mt-5 grid gap-4" (ngSubmit)="submit(request)" novalidate>
+              <form class="mt-5 grid gap-4" (submit)="submit($event, request)" novalidate>
                 <app-text-input
                   [formControl]="username"
                   [label]="i18n.t('username.newLabel')"
@@ -206,7 +206,8 @@ export class UsernameRequestPage {
     return STATUS_META[request.status];
   }
 
-  protected submit(request: UsernameChangeRequest): void {
+  protected submit(event: Event, request: UsernameChangeRequest): void {
+    event.preventDefault();
     this.username.markAsTouched();
 
     if (this.username.invalid) {
