@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  OnDestroy,
   OnInit,
   computed,
   inject,
@@ -11,6 +12,7 @@ import type {
   AdminLikeActivity,
   AdminMatchActivity,
   AdminOverview,
+  AdminStreamStats,
 } from '../../../core/api/models/admin.model';
 import { AdminService } from '../../../core/api/admin.service';
 import { formatDateTime } from '../../../core/utils/time';
@@ -235,10 +237,12 @@ const MATCH_SOURCE: Record<string, string> = {
     </div>
   `,
 })
-export class AdminOverviewPage implements OnInit {
+export class AdminOverviewPage implements OnInit, OnDestroy {
   private readonly admin = inject(AdminService);
+  private streamTimer: ReturnType<typeof setInterval> | null = null;
 
   protected readonly overview = signal<AdminOverview | null>(null);
+  protected readonly streamStats = signal<AdminStreamStats | null>(null);
   protected readonly loading = signal(true);
   protected readonly error = signal('');
 
@@ -314,6 +318,16 @@ export class AdminOverviewPage implements OnInit {
         link: '/admin/usuarios',
       },
       {
+        label: 'Conectados ahora',
+        value: this.streamStats()?.users ?? 0,
+        detail: this.streamStats()
+          ? `${this.streamStats()?.connections ?? 0} conexiones SSE · ${
+              this.streamStats()?.tickets ?? 0
+            } tickets`
+          : 'Sin datos SSE',
+        link: '/admin',
+      },
+      {
         label: 'Bajas pendientes',
         value: overview.pendingDeletions,
         detail: 'Cuentas dentro del plazo de 30 días',
@@ -324,6 +338,21 @@ export class AdminOverviewPage implements OnInit {
 
   ngOnInit(): void {
     this.load();
+    this.loadStreamStats();
+    this.streamTimer = setInterval(() => {
+      if (document.visibilityState === 'visible') this.loadStreamStats();
+    }, 30_000);
+  }
+
+  ngOnDestroy(): void {
+    if (this.streamTimer) clearInterval(this.streamTimer);
+  }
+
+  protected loadStreamStats(): void {
+    this.admin.getStreamStats().subscribe({
+      next: (stats) => this.streamStats.set(stats),
+      error: () => this.streamStats.set(null),
+    });
   }
 
   protected load(): void {

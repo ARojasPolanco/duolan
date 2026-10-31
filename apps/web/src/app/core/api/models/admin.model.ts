@@ -221,6 +221,13 @@ export interface AdminOverviewResponse {
   overview: AdminOverview;
 }
 
+export interface AdminStreamStats {
+  status: 'success';
+  users: number;
+  connections: number;
+  tickets: number;
+}
+
 export interface AdminMetrics {
   timeToFirstDuo: {
     medianHours: number | null;

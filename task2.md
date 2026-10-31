@@ -142,7 +142,7 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 
 ## Avance Fase 5 - Admin (2026-10-31)
 
-- Dashboard admin con métricas operativas reales, últimos likes/matches y enlaces filtrados.
+- Dashboard admin con métricas operativas reales, últimos likes/matches, conectados ahora y enlaces filtrados.
 - `/admin/usuarios` con búsqueda, filtros, paginación y acceso al detalle.
 - `/admin/usuarios/:id` con cuenta, perfil, estadísticas, reportes, sanciones y acciones de moderación.
 - Advertencias, suspensiones 7/30/permanente y solicitudes de username.
@@ -151,7 +151,7 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - Modelos y servicios de admin ajustados a las respuestas reales del backend.
 - Smoke visual de las pantallas admin con `demo_admin`.
 - Tests: 41 de Angular; lint y build verdes.
-- Pendiente: card "Conectados ahora", métricas ARAM y pulido de calidad.
+- Pendiente: métricas ARAM y pulido de calidad.
 
 ## Leyenda
 
@@ -496,7 +496,7 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - [x] Resolución de reportes.
 - [x] Solicitudes de username.
 - [x] Métricas.
-- [ ] Card “Conectados ahora” con SSE activo y auto-refresh cada 30 s.
+- [x] Card “Conectados ahora” con SSE activo y auto-refresh cada 30 s.
 
 ### Calidad
 

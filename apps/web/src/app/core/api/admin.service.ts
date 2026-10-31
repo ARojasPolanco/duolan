@@ -6,6 +6,7 @@ import type {
   AdminOverviewResponse,
   AdminReportsQuery,
   AdminReportsResponse,
+  AdminStreamStats,
   AdminUserDetailResponse,
   AdminUsersQuery,
   AdminUsersResponse,
@@ -63,5 +64,9 @@ export class AdminService {
 
   getMetricsSummary(from: string, to: string): Observable<AdminMetricsSummary> {
     return this.api.get<AdminMetricsSummary>('/admin/metrics/summary', { from, to });
+  }
+
+  getStreamStats(): Observable<AdminStreamStats> {
+    return this.api.get<AdminStreamStats>('/events/stats');
   }
 }
