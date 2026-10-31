@@ -74,7 +74,7 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - Landing final, cómo funciona, términos, privacidad y aviso de Riot bilingües.
 - Textos legales adaptados a Duo LAN, LAN y jurisdicción Argentina.
 - Selector de idioma ES/EN en las pantallas nuevas y traducciones de Fase 3.
-- Tests: 32 de Angular (auth, guards, interceptores, i18n, profile form y registro).
+- Tests: 34 de Angular (auth, guards, interceptores, i18n, profile form, registro y password toggle).
 - Smoke E2E manual con Chrome headless: registro, onboarding completo, perfil, perfil público, username y legales en inglés.
 - Pendiente de configuración: site key/secret de hCaptcha; mensajes de error del backend siguen en español.
 
@@ -265,6 +265,7 @@ Tablero vivo del proyecto **DuoLAN**. Se actualiza al empezar y terminar cada ta
 - [x] Registro con +18, términos y hCaptcha (site key pendiente de configurar en producción).
 - [x] Verificación por email.
 - [x] Login con email o username.
+- [x] Mostrar/ocultar contraseña en login, registro, reset y eliminación de cuenta.
 - [x] Logout.
 - [x] Forgot/reset.
 - [x] Manejo de suspensión.

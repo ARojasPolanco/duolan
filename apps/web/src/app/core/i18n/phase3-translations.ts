@@ -335,6 +335,8 @@ export const PHASE3_ES = {
   'label.no': 'No',
   'label.unspecified': 'Sin especificar',
   'label.notDeclared': 'Sin declarar',
+  'common.showPassword': 'Mostrar contraseña',
+  'common.hidePassword': 'Ocultar contraseña',
 } as const;
 
 export type Phase3TranslationKey = keyof typeof PHASE3_ES;
@@ -674,4 +676,6 @@ export const PHASE3_EN: Record<Phase3TranslationKey, string> = {
   'label.no': 'No',
   'label.unspecified': 'Not specified',
   'label.notDeclared': 'Not declared',
+  'common.showPassword': 'Show password',
+  'common.hidePassword': 'Hide password',
 };
