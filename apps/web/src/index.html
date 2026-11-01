@@ -58,8 +58,179 @@
       name="twitter:image:alt"
       content="Duo LAN: encontrá tu duo de League of Legends en el servidor LAN"
     />
+    <style>
+      .boot-screen {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 50% 38%, rgba(21, 88, 201, 0.24), transparent 34%),
+          radial-gradient(circle at 55% 82%, rgba(176, 207, 92, 0.09), transparent 28%), #030407;
+        color: #f4f7fb;
+        font-family: 'Montserrat', 'Segoe UI', sans-serif;
+      }
+      .boot-screen::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        opacity: 0.12;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        background-size: 52px 52px;
+        mask-image: radial-gradient(circle at center, black, transparent 68%);
+      }
+      .boot-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        width: min(88vw, 360px);
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .boot-logo {
+        width: 76px;
+        height: 76px;
+        filter: drop-shadow(0 18px 32px rgba(21, 88, 201, 0.34));
+      }
+      .boot-brand {
+        margin-top: 16px;
+        font-size: 29px;
+        font-weight: 900;
+        letter-spacing: -0.045em;
+      }
+      .boot-brand span {
+        color: #b0cf5c;
+      }
+      .boot-beta {
+        margin-top: 8px;
+        border: 1px solid rgba(176, 207, 92, 0.34);
+        border-radius: 999px;
+        background: rgba(176, 207, 92, 0.1);
+        padding: 5px 10px;
+        color: #c7dd83;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+      }
+      .boot-ring {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        margin-top: 34px;
+        border: 2px solid rgba(21, 88, 201, 0.34);
+        border-radius: 50%;
+      }
+      .boot-ring::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border: 2px solid transparent;
+        border-top-color: #b0cf5c;
+        border-right-color: rgba(176, 207, 92, 0.32);
+        border-radius: 50%;
+        animation: boot-spin 0.9s linear infinite;
+      }
+      .boot-phrases {
+        position: relative;
+        width: 100%;
+        height: 30px;
+        margin-top: 24px;
+      }
+      .boot-phrases span {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #d4dbe6;
+        font-size: 14px;
+        font-weight: 600;
+        opacity: 0;
+        animation: boot-phrase 12s linear infinite;
+      }
+      .boot-phrases span:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .boot-phrases span:nth-child(2) {
+        animation-delay: 2.4s;
+      }
+      .boot-phrases span:nth-child(3) {
+        animation-delay: 4.8s;
+      }
+      .boot-phrases span:nth-child(4) {
+        animation-delay: 7.2s;
+      }
+      .boot-phrases span:nth-child(5) {
+        animation-delay: 9.6s;
+      }
+      .boot-hint {
+        margin-top: 8px;
+        color: #66748a;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      @keyframes boot-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes boot-phrase {
+        0%,
+        18% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        20%,
+        100% {
+          opacity: 0;
+          transform: translateY(4px);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .boot-ring::before {
+          animation: none;
+          border-top-color: #b0cf5c;
+        }
+        .boot-phrases span {
+          animation: none;
+        }
+        .boot-phrases span:first-child {
+          opacity: 1;
+        }
+      }
+    </style>
   </head>
   <body>
-    <app-root></app-root>
+    <app-root>
+      <div class="boot-screen" role="status" aria-live="polite" aria-label="Cargando Duo LAN">
+        <div class="boot-content">
+          <svg class="boot-logo" viewBox="0 0 64 64" aria-hidden="true">
+            <rect width="64" height="64" rx="16" fill="#071326" />
+            <path
+              d="M32 8 54 20v20L32 56 10 40V20L32 8Z"
+              fill="none"
+              stroke="#1558c9"
+              stroke-width="4"
+            />
+            <path d="M23 22h11a10 10 0 0 1 0 20H23V22Z" fill="#b0cf5c" />
+          </svg>
+          <div class="boot-brand">Duo<span>LAN</span></div>
+          <div class="boot-beta">BETA</div>
+          <div class="boot-ring" aria-hidden="true"></div>
+          <div class="boot-phrases">
+            <span>Buscando duos compatibles…</span>
+            <span>Revisando rangos y roles…</span>
+            <span>Acomodando horarios…</span>
+            <span>Calentando la Grieta…</span>
+            <span>Preparando tu próximo match…</span>
+          </div>
+          <p class="boot-hint">La primera carga puede tardar unos segundos.</p>
+        </div>
+      </div>
+    </app-root>
   </body>
 </html>
