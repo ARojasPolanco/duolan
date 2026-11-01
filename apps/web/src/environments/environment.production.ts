@@ -4,5 +4,5 @@ export const environment = {
   gameServer: 'LAN',
   timezone: 'America/Mexico_City',
   apiUrl: 'https://duolan.onrender.com/api/v1',
-  hcaptchaSiteKey: '10000000-ffff-ffff-ffff-000000000001',
+  hcaptchaSiteKey: 'fdc29038-6bea-4c54-a6de-5f264dd8d37e',
 };
