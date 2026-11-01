@@ -1,3 +1,5 @@
+// Equivalente a un interceptor de axios en React: normaliza errores,
+// maneja 401/403 y evita redirects en los endpoints de autenticación.
 import type { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';

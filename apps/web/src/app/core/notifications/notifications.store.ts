@@ -1,3 +1,5 @@
+// Store liviano con signals, comparable a Zustand o Context en React.
+// Centraliza el estado de notificaciones, SSE, polling y toasts.
 import { DestroyRef, Injectable, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';

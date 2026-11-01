@@ -1,3 +1,5 @@
+// Contrato único de error para la UI. En React usaría un helper equivalente
+// para no repetir status, mensaje y fallback en cada llamada HTTP.
 import { HttpErrorResponse } from '@angular/common/http';
 import type { ApiErrorPayload } from './models/common.model';
 

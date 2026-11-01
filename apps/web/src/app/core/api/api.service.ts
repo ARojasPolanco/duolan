@@ -1,3 +1,5 @@
+// Adaptación de un cliente HTTP de React (axios o wrapper de fetch) a Angular:
+// una sola base URL, query params normalizados y respuestas tipadas.
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import type { Observable } from 'rxjs';

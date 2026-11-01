@@ -1,3 +1,5 @@
+// Equivalentes a ProtectedRoute o a los loaders de React Router:
+// la sesión se valida antes de montar la página, no dentro del componente.
 import { inject } from '@angular/core';
 import { Router, type CanActivateFn } from '@angular/router';
 import { AuthService } from './auth.service';
