@@ -15,6 +15,27 @@ export const adminUsersQuerySchema = z
   })
   .strict();
 
+export const adminLikesQuerySchema = z
+  .object({
+    search: z.string().trim().max(100).optional(),
+    status: z.enum(['pending', 'matched', 'cancelled']).optional(),
+    page: z.coerce.number().int().min(1).default(1),
+    limit: z.coerce.number().int().min(1).max(50).default(20),
+  })
+  .strict();
+
+export function validateAdminLikesQuery(data) {
+  const result = adminLikesQuerySchema.safeParse(data);
+  if (!result.success) {
+    return {
+      hasError: true,
+      errorMessages: result.error.issues.map((issue) => issue.message),
+      data: null,
+    };
+  }
+  return { hasError: false, errorMessages: [], data: result.data };
+}
+
 export function validateAdminUsersQuery(data) {
   const result = adminUsersQuerySchema.safeParse(data);
   if (!result.success) {

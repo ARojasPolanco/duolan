@@ -15,6 +15,7 @@ interface AdminLink {
 const ADMIN_LINKS: AdminLink[] = [
   { path: '/admin', labelKey: 'common.adminOverview' },
   { path: '/admin/usuarios', labelKey: 'common.adminUsers' },
+  { path: '/admin/likes', labelKey: 'common.adminLikes' },
   { path: '/admin/reportes', labelKey: 'common.adminReports' },
   { path: '/admin/metrics', labelKey: 'common.adminMetrics' },
 ];

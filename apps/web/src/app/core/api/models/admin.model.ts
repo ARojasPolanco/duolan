@@ -175,6 +175,24 @@ export interface AdminLikeActivity {
   to: { id: string; username: string } | null;
 }
 
+export interface AdminLikesResponse {
+  status: 'success';
+  likes: AdminLikeActivity[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+export interface AdminLikesQuery {
+  search?: string;
+  status?: 'pending' | 'matched' | 'cancelled';
+  page?: number;
+  limit?: number;
+}
+
 export interface AdminMatchActivity {
   id: string;
   source: string;

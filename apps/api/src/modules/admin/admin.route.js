@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  getLikes,
   getOverview,
   getReports,
   getUserDetail,
@@ -21,6 +22,7 @@ const router = Router();
 router.use(protect, restrictTo('admin'));
 
 router.get('/overview', getOverview);
+router.get('/likes', getLikes);
 router.get('/users', getUsers);
 router.get('/users/:id', getUserDetail);
 router.post('/users/:id/warn', warnUser);

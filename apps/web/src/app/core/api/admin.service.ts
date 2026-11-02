@@ -2,6 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import type { Observable } from 'rxjs';
 import type { ApiSuccess } from './models/common.model';
 import type {
+  AdminLikesQuery,
+  AdminLikesResponse,
   AdminMetricsSummary,
   AdminOverviewResponse,
   AdminReportsQuery,
@@ -22,6 +24,10 @@ export class AdminService {
 
   getOverview(): Observable<AdminOverviewResponse> {
     return this.api.get<AdminOverviewResponse>('/admin/overview');
+  }
+
+  getLikes(query: AdminLikesQuery = {}): Observable<AdminLikesResponse> {
+    return this.api.get<AdminLikesResponse>('/admin/likes', query);
   }
 
   getUsers(query: AdminUsersQuery = {}): Observable<AdminUsersResponse> {

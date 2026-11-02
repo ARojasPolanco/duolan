@@ -382,6 +382,42 @@ export class AdminService {
     };
   }
 
+  async listLikes({ page, limit, status, search }) {
+    const where = {};
+
+    if (status) where.status = status;
+
+    if (search) {
+      where[Op.or] = [
+        { '$fromUser.username$': { [Op.iLike]: `%${search}%` } },
+        { '$toUser.username$': { [Op.iLike]: `%${search}%` } },
+      ];
+    }
+
+    const { rows, count } = await DuoLike.findAndCountAll({
+      where,
+      include: [
+        { model: User, as: 'fromUser', attributes: ['id', 'username'], required: false },
+        { model: User, as: 'toUser', attributes: ['id', 'username'], required: false },
+      ],
+      order: [['createdAt', 'DESC']],
+      limit,
+      offset: (page - 1) * limit,
+      distinct: true,
+      subQuery: false,
+    });
+
+    return {
+      likes: rows.map(toLikeActivity),
+      pagination: {
+        page,
+        limit,
+        total: count,
+        totalPages: Math.max(1, Math.ceil(count / limit)),
+      },
+    };
+  }
+
   async overview() {
     const now = new Date();
     const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);

@@ -203,6 +203,12 @@ export const routes: Routes = [
         title: 'Admin usuario - Duo LAN',
       },
       {
+        path: 'likes',
+        loadComponent: () =>
+          import('./features/admin/pages/admin-likes-page').then((module) => module.AdminLikesPage),
+        title: 'Admin likes - Duo LAN',
+      },
+      {
         path: 'reportes',
         loadComponent: () =>
           import('./features/admin/pages/admin-reports-page').then(

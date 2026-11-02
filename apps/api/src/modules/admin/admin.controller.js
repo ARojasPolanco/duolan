@@ -1,5 +1,5 @@
 import { adminService } from './admin.service.js';
-import { validateAdminUsersQuery } from './admin.schema.js';
+import { validateAdminLikesQuery, validateAdminUsersQuery } from './admin.schema.js';
 import { reportService } from '../trust/report.service.js';
 import {
   validateAdminReportsQuery,
@@ -14,6 +14,17 @@ export const getOverview = catchAsync(async (_req, res) => {
   const overview = await adminService.overview();
 
   res.status(200).json({ status: 'success', overview });
+});
+
+export const getLikes = catchAsync(async (req, res) => {
+  const { hasError, errorMessages, data } = validateAdminLikesQuery(req.query);
+  if (hasError) {
+    return res.status(422).json({ status: 'fail', message: errorMessages.join(', ') });
+  }
+
+  const result = await adminService.listLikes(data);
+
+  res.status(200).json({ status: 'success', ...result });
 });
 
 export const getUsers = catchAsync(async (req, res) => {

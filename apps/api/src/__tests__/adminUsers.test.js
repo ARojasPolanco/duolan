@@ -4,6 +4,7 @@ import app from '../app.js';
 import sequelize from '../config/database/database.js';
 import { runMigrations } from '../config/database/migrator.js';
 import User from '../modules/auth/auth.model.js';
+import DuoLike from '../modules/matching/duoLike.model.js';
 import { authHeader, createMatchUser } from './helpers/fixtures.js';
 
 const api = request(app);
@@ -81,6 +82,38 @@ describe('Admin usuarios', () => {
     expect(detail.body.user.emailVerificationToken).toBeUndefined();
     expect(detail.body.user.stats).toHaveProperty('openReports');
     expect(detail.body.user.reports).toEqual(expect.any(Array));
+  });
+
+  it('lista likes con búsqueda, estado y paginación', async () => {
+    const admin = await makeAdmin();
+    const from = await createMatchUser();
+    const to = await createMatchUser();
+
+    await DuoLike.create({
+      fromUserId: from.user.id,
+      toUserId: to.user.id,
+      status: 'pending',
+    });
+
+    const list = await api
+      .get('/api/v1/admin/likes')
+      .query({ search: from.user.username, status: 'pending' })
+      .set(authHeader(admin.token));
+
+    expect(list.status).toBe(200);
+    expect(list.body.pagination.total).toBe(1);
+    expect(list.body.likes[0]).toMatchObject({
+      status: 'pending',
+      from: { username: from.user.username },
+      to: { username: to.user.username },
+    });
+
+    const invalid = await api
+      .get('/api/v1/admin/likes')
+      .query({ status: 'otro' })
+      .set(authHeader(admin.token));
+
+    expect(invalid.status).toBe(422);
   });
 
   it('valida filtros y usuarios inexistentes', async () => {
